@@ -114,16 +114,17 @@ public class ALERTVeffCalibration {
                         Calib_1.calib.setDoubleValue(VeffWedgeHisto[sector][slayer][comp].getRMS(),
                                 "dveff", sector, slayer, comp);
                     }
+                    ALERTCalibGUI DrawHisto = new ALERTCalibGUI();
+                    DrawHisto.Draw(VeffHisto[sector][slayer][comp], f2);
                 }
             }
         }
 
 
         Calib_1.calib.fireTableDataChanged();
-        ALERTCalConstants Cal_Passer = new ALERTCalConstants();
+        //ALERTCalConstants Cal_Passer = new ALERTCalConstants();
         //Cal_Passer.Calib_Passer();
-        ALERTCalibGUI DrawHisto = new ALERTCalibGUI();
-        DrawHisto.Draw(VeffHisto[0][1][1], f2);
+
     }
 
 

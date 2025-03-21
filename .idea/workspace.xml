@@ -1,0 +1,726 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="925d8a0b-b0f1-4060-9cbb-88af2f05fc94" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/clas/modules/scint/ALERTT0Calibration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/clas/modules/ALERTCalibrationEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/clas/modules/ALERTCalibrationEngine.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/clas/modules/ALERTDataStructs.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/clas/modules/ALERTDataStructs.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/clas/modules/gui/ALERTCalibGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/clas/modules/gui/ALERTCalibGUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/clas/modules/scint/ALERTFrontBackCalibration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/clas/modules/scint/ALERTFrontBackCalibration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/clas/modules/scint/ALERTVeffCalibration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/clas/modules/scint/ALERTVeffCalibration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/clas/modules/utils/ALERTDatabaseConstantProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/clas/modules/utils/ALERTDatabaseConstantProvider.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/clas/modules/ALERTCalibrationEngine.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/clas/modules/ALERTCalibrationEngine.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/clas/modules/ALERTDataStructs.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/clas/modules/ALERTDataStructs.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/clas/modules/gui/ALERTCalibGUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/clas/modules/gui/ALERTCalibGUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/clas/modules/scint/ALERTFrontBackCalibration.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/clas/modules/scint/ALERTFrontBackCalibration.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/clas/modules/scint/ALERTVeffCalibration.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/clas/modules/scint/ALERTVeffCalibration.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/clas/modules/utils/ALERTDatabaseConstantProvider.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/clas/modules/utils/ALERTDatabaseConstantProvider.class" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
+  <component name="ProjectId" id="2piuTAxpISEBDJfcqgh7OMtHqzV" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.ALERTCalibrationConstants.executor": "Run",
+    "Application.ALERTCalibrationEngine (1).executor": "Run",
+    "Application.ALERTCalibrationEngine (2).executor": "Run",
+    "Application.ALERTCalibrationEngine (3).executor": "Run",
+    "Application.ALERTCalibrationEngine.executor": "Run",
+    "Application.ALERTDatabaseConstantProvider.executor": "Run",
+    "Application.run.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/Users/mpaolone/work/clas12/atof/ATOFcalibration",
+    "settings.editor.selected.configurable": "editing.templates"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/java/org/clas/modules" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.ALERTCalibrationEngine">
+    <configuration name="ALERTCalibrationEngine (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="org.clas.modules.ALERTCalibrationEngine" />
+      <module name="ATOFcalibration" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.clas.modules.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ALERTCalibrationEngine (2)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="org.clas.modules.ALERTCalibrationEngine" />
+      <module name="ATOFcalibration" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.clas.modules.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ALERTCalibrationEngine (3)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="org.clas.modules.ALERTCalibrationEngine" />
+      <module name="ATOFcalibration" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.clas.modules.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ALERTCalibrationEngine" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="org.clas.modules.ALERTCalibrationEngine" />
+      <module name="ATOFcalibration" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.clas.modules.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ALERTCalibrationEngine" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="org.clas.modules.ALERTCalibrationEngine" />
+      <module name="ATOFcalibration" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.clas.modules.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ALERTCalibrationEngine" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="org.clas.modules.ALERTCalibrationEngine" />
+      <module name="ATOFcalibration" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.clas.modules.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ALERTCalibrationEngine" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="org.clas.modules.ALERTCalibrationEngine" />
+      <module name="ATOFcalibration" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.clas.modules.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ALERTCalibrationEngine" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="org.clas.modules.ALERTCalibrationEngine" />
+      <module name="ATOFcalibration" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.clas.modules.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ALERTCalibrationEngine" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="org.clas.modules.ALERTCalibrationEngine" />
+      <module name="ATOFcalibration" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.clas.modules.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ALERTCalibrationEngine" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="org.clas.modules.ALERTCalibrationEngine" />
+      <module name="ATOFcalibration" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.clas.modules.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ALERTCalibrationEngine" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="org.clas.modules.ALERTCalibrationEngine" />
+      <module name="ATOFcalibration" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.clas.modules.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ALERTCalibrationEngine" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="org.clas.modules.ALERTCalibrationEngine" />
+      <module name="ATOFcalibration" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.clas.modules.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ALERTCalibrationEngine" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="org.clas.modules.ALERTCalibrationEngine" />
+      <module name="ATOFcalibration" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.clas.modules.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ALERTCalibrationEngine" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="org.clas.modules.ALERTCalibrationEngine" />
+      <module name="ATOFcalibration" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.clas.modules.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ALERTCalibrationEngine" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="org.clas.modules.ALERTCalibrationEngine" />
+      <module name="ATOFcalibration" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.clas.modules.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ALERTCalibrationEngine" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="org.clas.modules.ALERTCalibrationEngine" />
+      <module name="ATOFcalibration" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.clas.modules.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ALERTCalibrationEngine" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="org.clas.modules.ALERTCalibrationEngine" />
+      <module name="ATOFcalibration" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.clas.modules.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ALERTCalibrationEngine" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="org.clas.modules.ALERTCalibrationEngine" />
+      <module name="ATOFcalibration" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.clas.modules.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ALERTCalibrationEngine" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="org.clas.modules.ALERTCalibrationEngine" />
+      <module name="ATOFcalibration" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.clas.modules.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ALERTCalibrationEngine" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="org.clas.modules.ALERTCalibrationEngine" />
+      <module name="ATOFcalibration" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.clas.modules.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ALERTCalibrationEngine" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="org.clas.modules.ALERTCalibrationEngine" />
+      <module name="ATOFcalibration" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.clas.modules.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ALERTCalibrationEngine" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="org.clas.modules.ALERTCalibrationEngine" />
+      <module name="ATOFcalibration" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.clas.modules.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ALERTCalibrationEngine" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="org.clas.modules.ALERTCalibrationEngine" />
+      <module name="ATOFcalibration" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.clas.modules.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ALERTCalibrationEngine" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="org.clas.modules.ALERTCalibrationEngine" />
+      <module name="ATOFcalibration" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.clas.modules.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ALERTCalibrationEngine" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="org.clas.modules.ALERTCalibrationEngine" />
+      <module name="ATOFcalibration" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.clas.modules.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ALERTCalibrationEngine" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="org.clas.modules.ALERTCalibrationEngine" />
+      <module name="ATOFcalibration" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.clas.modules.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ALERTCalibrationEngine" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="org.clas.modules.ALERTCalibrationEngine" />
+      <module name="ATOFcalibration" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.clas.modules.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ALERTCalibrationEngine" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="org.clas.modules.ALERTCalibrationEngine" />
+      <module name="ATOFcalibration" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.clas.modules.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ALERTCalibrationEngine" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="org.clas.modules.ALERTCalibrationEngine" />
+      <module name="ATOFcalibration" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.clas.modules.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ALERTCalibrationEngine" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="org.clas.modules.ALERTCalibrationEngine" />
+      <module name="ATOFcalibration" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.clas.modules.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ALERTCalibrationEngine" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="org.clas.modules.ALERTCalibrationEngine" />
+      <module name="ATOFcalibration" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.clas.modules.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ALERTCalibrationEngine" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="org.clas.modules.ALERTCalibrationEngine" />
+      <module name="ATOFcalibration" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.clas.modules.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ALERTCalibrationEngine" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="org.clas.modules.ALERTCalibrationEngine" />
+      <module name="ATOFcalibration" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.clas.modules.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ALERTCalibrationEngine" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="org.clas.modules.ALERTCalibrationEngine" />
+      <module name="ATOFcalibration" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.clas.modules.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ALERTCalibrationEngine" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="org.clas.modules.ALERTCalibrationEngine" />
+      <module name="ATOFcalibration" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.clas.modules.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ALERTCalibrationEngine" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="org.clas.modules.ALERTCalibrationEngine" />
+      <module name="ATOFcalibration" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.clas.modules.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ALERTCalibrationEngine" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="org.clas.modules.ALERTCalibrationEngine" />
+      <module name="ATOFcalibration" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.clas.modules.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ALERTCalibrationEngine" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="org.clas.modules.ALERTCalibrationEngine" />
+      <module name="ATOFcalibration" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.clas.modules.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ALERTCalibrationEngine" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="org.clas.modules.ALERTCalibrationEngine" />
+      <module name="ATOFcalibration" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.clas.modules.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ALERTCalibrationEngine" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="org.clas.modules.ALERTCalibrationEngine" />
+      <module name="ATOFcalibration" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.clas.modules.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ALERTCalibrationEngine" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="org.clas.modules.ALERTCalibrationEngine" />
+      <module name="ATOFcalibration" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.clas.modules.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ALERTCalibrationEngine" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="org.clas.modules.ALERTCalibrationEngine" />
+      <module name="ATOFcalibration" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.clas.modules.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ALERTCalibrationEngine" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="org.clas.modules.ALERTCalibrationEngine" />
+      <module name="ATOFcalibration" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.clas.modules.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ALERTCalibrationEngine" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="org.clas.modules.ALERTCalibrationEngine" />
+      <module name="ATOFcalibration" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.clas.modules.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ALERTCalibrationEngine" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="org.clas.modules.ALERTCalibrationEngine" />
+      <module name="ATOFcalibration" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.clas.modules.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ALERTCalibrationEngine" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="org.clas.modules.ALERTCalibrationEngine" />
+      <module name="ATOFcalibration" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.clas.modules.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ALERTCalibrationEngine" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="org.clas.modules.ALERTCalibrationEngine" />
+      <module name="ATOFcalibration" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.clas.modules.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ALERTCalibrationEngine" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="org.clas.modules.ALERTCalibrationEngine" />
+      <module name="ATOFcalibration" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.clas.modules.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ALERTCalibrationEngine" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="org.clas.modules.ALERTCalibrationEngine" />
+      <module name="ATOFcalibration" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.clas.modules.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.ALERTCalibrationEngine" />
+        <item itemvalue="Application.ALERTCalibrationEngine" />
+        <item itemvalue="Application.ALERTCalibrationEngine" />
+        <item itemvalue="Application.ALERTCalibrationEngine" />
+        <item itemvalue="Application.ALERTCalibrationEngine" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="925d8a0b-b0f1-4060-9cbb-88af2f05fc94" name="Changes" comment="" />
+      <created>1733261222541</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1733261222541</updated>
+    </task>
+    <servers />
+  </component>
+</project>

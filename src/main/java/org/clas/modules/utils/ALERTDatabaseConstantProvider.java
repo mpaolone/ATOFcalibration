@@ -236,6 +236,50 @@ public class ALERTDatabaseConstantProvider implements ConstantProvider {
 
         return table;
     }
+    public CalibrationConstants readConstants(String table_name, int indexCount) {
+        Assignment asgmt = this.provider.getData(table_name);
+        int ncolumns = asgmt.getColumnCount();
+        Vector<TypeTableColumn> typecolumn = asgmt.getTypeTable().getColumns();
+        String[] format = new String[ncolumns - 4];
+
+        for(int loop = 4; loop < ncolumns; ++loop) {
+            if (((TypeTableColumn)typecolumn.get(loop)).getCellType().name().compareTo("DOUBLE") == 0) {
+                format[loop - 4] = ((TypeTableColumn)typecolumn.get(loop)).getName() + "/D";
+            } else {
+                format[loop - 4] = ((TypeTableColumn)typecolumn.get(loop)).getName() + "/I";
+            }
+        }
+
+        CalibrationConstants table = new CalibrationConstants(4, format);
+
+        for(int i = 0; i < 4; ++i) {
+            table.setIndexName(i, ((TypeTableColumn)typecolumn.get(i)).getName());
+        }
+
+        table.show();
+        List<Vector<String>> tableRows = new ArrayList();
+
+        int nrows;
+        for(nrows = 0; nrows < ncolumns; ++nrows) {
+            String name = ((TypeTableColumn)typecolumn.get(nrows)).getName();
+            Vector<String> column = asgmt.getColumnValuesString(name);
+            tableRows.add(column);
+        }
+
+        nrows = ((Vector)tableRows.get(0)).size();
+
+        for(int nr = 0; nr < nrows; ++nr) {
+            String[] values = new String[ncolumns];
+
+            for(int nc = 0; nc < ncolumns; ++nc) {
+                values[nc] = (String)((Vector)tableRows.get(nc)).get(nr);
+            }
+
+            table.addEntryFromString(values);
+        }
+
+        return table;
+    }
 
     public IndexedTable readTable(String table_name) {
         return this.readTable(table_name, 3);

@@ -6,12 +6,10 @@ import org.jlab.detector.calib.utils.CalibrationConstants;
 import org.jlab.detector.calib.utils.ConstantsManager;
 import org.jlab.groot.group.DataGroup;
 import org.jlab.utils.groups.IndexedList;
+import org.jlab.utils.groups.IndexedTable;
 
 import javax.swing.*;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class ALERTCalibrationEngine extends CalibrationEngine {
     private final int npaddles = 4;
@@ -36,7 +34,10 @@ public class ALERTCalibrationEngine extends CalibrationEngine {
     public  CalibrationConstants                    calib2 = null;
     private Map<String,CalibrationConstants> globalCalib = null;
     private final IndexedList<DataGroup> dataGroupCal = new IndexedList<DataGroup>(3);
-
+    public static int numSector = 15;
+    public static int numLayer = 4;
+    public static int numComp = 11;
+    public static int numOrder = 2;
     public static String PassModule;
 
 
@@ -45,7 +46,8 @@ public class ALERTCalibrationEngine extends CalibrationEngine {
         // System.out.println("Lets Define some properties");
         //System.out.println("And Initialize Histo");
         dbc = new ALERTDatabaseConstantProvider(1,"default","");
-        timeOffConsts = dbc.readConstants("/calibration/alert/atof/time_offsets");
+        timeOffConsts = dbc.readConstants("/calibration/alert/atof/time_offsets",4);
+        //timeOffConsts = dbc.readTable("/calibration/alert/atof/time_offsets",4);
         twConsts = dbc.readConstants("/calibration/alert/atof/time_walk");
         veffConsts = dbc.readConstants("/calibration/alert/atof/effective_velocity");
         attlenConsts = dbc.readConstants("/calibration/alert/atof/attenuation");
@@ -63,6 +65,47 @@ public class ALERTCalibrationEngine extends CalibrationEngine {
 
         return constants;
     }
+// The following is a reassignment of each PMT to a unique index, and the next few functions return from an index the
+// appropriate sector,layer,component, and order
+    public int PMTtoIndex(int sector, int layer, int component, int order){
+        int indexOrder = component + order;
+        int indexN = sector*(numLayer*(numComp+1)) + layer*(numComp + 1) + indexOrder;
+        return indexN;
+    }
+
+    public int IndextoOrder(int index){
+        int order = -1;
+        int indexOrder = index%(numComp +1);
+        if(indexOrder == 11){
+            order = 1;
+        }else{
+            order = 0;
+        }
+        return order;
+    }
+    public int IndextoComponent(int index){
+        int component = -1;
+        int indexOrder = index%(numComp + 1);
+        if(indexOrder == 11){
+            component = 10;
+        }else{
+            component = indexOrder;
+        }
+        return component;
+    }
+    public int IndextoLayer(int index){
+        int layer = index%numLayer;
+        return layer;
+    }
+    public int IndextoSector(int index){
+        int sector = index%numSector;
+        if(sector > 0){
+            sector = numSector - sector;
+        }
+        return sector;
+    }
+
+
 
     public String getName() {
         return moduleName;
@@ -74,10 +117,18 @@ public class ALERTCalibrationEngine extends CalibrationEngine {
         //this.calib = new CalibrationConstants(3,Constants);
         //calib = new CalibrationConstants(3, "constant");
         if (name.equals("Veff")) {
-            calib = new CalibrationConstants(3, "veff/F:dveff/F");
+            calib = new CalibrationConstants(3, "veff/F:dveff/F:extra1/F:extra2/F");
         }
         if (name.equals("Atten")) {
-            calib = new CalibrationConstants(3, "atten/F:datten/F");
+            calib = new CalibrationConstants(3, "atten/F:datten/F:extra1/F:extra2/F");
+        }
+        if (name.equals("T0")) {
+            //calib = new CalibrationConstants(4, "t0/F:upstream_downstream/F:wedge_bar/F:extra1/F:extra2/F");
+            calib = new CalibrationConstants(3, "order/I:t0/F:upstream_downstream/F:wedge_bar/F:extra1/F:extra2/F");
+        }
+
+        if (name.equals("TW")) {
+            calib = new CalibrationConstants(3, "order/I:tw0/F:tw1/F:tw2/F:tw3/F:dtw0/F:dtw1/F:dtw2/F:dtw3/F:chi2ndf/F");
         }
         // this corresponds to sector/layer/comp in CalibrationConstants.class
         calib.setName(name);
@@ -98,6 +149,7 @@ public class ALERTCalibrationEngine extends CalibrationEngine {
         org.clas.modules.scint.ALERTPedestalCalibration Pedestal_Calib = new org.clas.modules.scint.ALERTPedestalCalibration();
         org.clas.modules.scint.ALERTFrontBackCalibration FB_Calib = new org.clas.modules.scint.ALERTFrontBackCalibration();
         org.clas.modules.scint.ALERTAttenLenCalibration Atten_Calib = new org.clas.modules.scint.ALERTAttenLenCalibration();
+        org.clas.modules.scint.ALERTT0Calibration T0_Calib = new org.clas.modules.scint.ALERTT0Calibration();
 
         if (name.equals("Pedestal")){
             System.out.println("Calling Pedestal");
@@ -111,7 +163,6 @@ public class ALERTCalibrationEngine extends CalibrationEngine {
         else if (name.equals("TW")){
             System.out.println("Cal TW");
             TW_Calib.calcTW(DG);
-
         }
         else if (name.equals("Veff")){
             //System.out.println("Calling Veff");
@@ -120,6 +171,12 @@ public class ALERTCalibrationEngine extends CalibrationEngine {
 
         else if(name.equals("Atten")){
             Atten_Calib.calcATTLEN(DG);
+        }
+        else if(name.equals("T0")){
+            //System.out.println("DG index: " + DG.getIndexSize());
+            T0_Calib.calcT0(DG);
+            System.out.println("running ud");
+            //FB_Calib.getMeanDifference(DG);
         }
     }
 
@@ -131,12 +188,36 @@ public class ALERTCalibrationEngine extends CalibrationEngine {
         for (int isec = 0; isec < 15; isec++) {
             for (int suplayer = 0; suplayer < 4; suplayer++) {
                 for (int ipad = 0; ipad <= 10; ipad++) {
-                    System.out.println("ADDING ENTRY");
-                    calib.addEntry(isec, suplayer, ipad);
-                   // calib.setDoubleValue(0.0, "constant", isec, suplayer,ipad);
-                    calib.setDoubleValue(0.0, "veff", isec, suplayer,ipad);
-                    calib.setDoubleValue(0.0, "dveff", isec, suplayer,ipad);
-                    System.out.println(calib.getDoubleValue("veff", isec, suplayer,ipad));
+                    //System.out.println("ADDING ENTRY");
+                    if(moduleName.equals("Veff")){
+                        calib.addEntry(isec, suplayer, ipad);
+                        calib.setDoubleValue(0.0, "veff", isec, suplayer, ipad);
+                        calib.setDoubleValue(0.0, "dveff", isec, suplayer, ipad);
+                        calib.setDoubleValue(0.0, "extra1", isec, suplayer, ipad);
+                        calib.setDoubleValue(0.0, "extra2", isec, suplayer, ipad);
+                    }
+
+
+                    else if(moduleName.equals("T0")){
+                        calib.addEntry(isec, suplayer, ipad);
+                        calib.setIntValue(0, "order", isec, suplayer, ipad);
+                        calib.setDoubleValue(0.0, "t0", isec, suplayer, ipad);
+                        calib.setDoubleValue(0.0, "upstream_downstream", isec, suplayer, ipad);
+                        calib.setDoubleValue(0.0, "wedge_bar", isec, suplayer, ipad);
+                        calib.setDoubleValue(0.0, "extra1", isec, suplayer, ipad);
+                        calib.setDoubleValue(0.0, "extra2", isec, suplayer, ipad);
+                        //if(ipad == 10){
+                            calib.addEntry(isec, suplayer, ipad +1);
+                            calib.setIntValue(1, "order", isec, suplayer, ipad +1);
+                            calib.setDoubleValue(0.0, "t0", isec, suplayer, ipad +1);
+                            calib.setDoubleValue(0.0, "upstream_downstream", isec, suplayer, ipad +1);
+                            calib.setDoubleValue(0.0, "wedge_bar", isec, suplayer, ipad +1);
+                            calib.setDoubleValue(0.0, "extra1", isec, suplayer, ipad +1);
+                            calib.setDoubleValue(0.0, "extra2", isec, suplayer, ipad +1);
+                        //}
+                    }
+
+
                 }
             }
         }
@@ -149,6 +230,7 @@ public class ALERTCalibrationEngine extends CalibrationEngine {
     @Override
     public List<CalibrationConstants> getCalibrationConstants() {
         System.out.println("getCalibConstants!");
+        System.out.println(Arrays.asList(calib));
         return Arrays.asList(calib);
     }
 
@@ -157,6 +239,8 @@ public class ALERTCalibrationEngine extends CalibrationEngine {
         //return dataGroupCal;
         return ALERTDataStructs.dataGroups;
     }
+
+
 
     public static void main(String[] args){
 
@@ -170,7 +254,7 @@ public class ALERTCalibrationEngine extends CalibrationEngine {
         Scanner Module_input = new Scanner(System.in);
         String ALERT_Detector = "SC";
         String Module;
-        System.out.println("Which Calibration? (Veff, Atten, TW");
+        System.out.println("Which Calibration? (Veff, Atten, TW)");
         ALERTCalibrationEngine Module_Setter = new ALERTCalibrationEngine();
         Module = Module_input.nextLine();
         System.out.println("Calibration will be done for:" + Module);
@@ -182,5 +266,7 @@ public class ALERTCalibrationEngine extends CalibrationEngine {
         frame.add(viewer.mainPanel);
         frame.setSize(1400, 800);
         frame.setVisible(true);
+
+
     }
 }

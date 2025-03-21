@@ -3,7 +3,6 @@ package org.clas.modules.gui;
 import org.clas.modules.ALERTCalibrationEngine;
 import org.clas.modules.ALERTDataStructs;
 //import org.clas.modules.geom.ALERTGeometry;
-import org.clas.modules.utils.ALERTDatabaseConstantProvider;
 import org.jlab.detector.base.DetectorType;
 import org.jlab.detector.calib.utils.CalibrationConstants;
 import org.jlab.detector.calib.utils.CalibrationConstantsListener;
@@ -21,12 +20,15 @@ import org.jlab.io.task.DataSourceProcessorPane;
 import org.jlab.io.task.IDataEventListener;
 import org.jlab.utils.groups.IndexedList;
 import org.jlab.utils.groups.IndexedTable;
-import org.jlab.utils.groups.IndexedTableViewer;
+import org.jlab.utils.system.ClasUtilsFile;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class ALERTCalibGUI implements IDataEventListener, ActionListener, CalibrationConstantsListener, DetectorListener{
 
@@ -140,14 +142,14 @@ public class ALERTCalibGUI implements IDataEventListener, ActionListener, Calibr
 
     public void constantsEvent(CalibrationConstants calibrationConstants, int i, int i1) {
 
-        System.out.println("WHEN DOES CONSTANTS Events get called");
+        //System.out.println("WHEN DOES CONSTANTS Events get called");
         //ALERTCalibrationEngine ce2 = new ALERTCalibrationEngine();
-        System.out.println("Well. it's working " + i + "  " + i1);
+        //System.out.println("Well. it's working " + i + "  " + i1);
         String str_sector    = (String) calibrationConstants.getValueAt(i1, 0);
         String str_layer     = (String) calibrationConstants.getValueAt(i1, 1);
         String str_component = (String) calibrationConstants.getValueAt(i1, 2);
         String str_val = (String) calibrationConstants.getValueAt(i1, 3);
-        System.out.println(str_sector + " " + str_layer + " " + str_component + " "+str_val);
+        //System.out.println(str_sector + " " + str_layer + " " + str_component + " "+str_val);
         IndexedList<DataGroup> group = ce.getDataGroup();
 
         int sector    = Integer.parseInt(str_sector);
@@ -166,6 +168,9 @@ public class ALERTCalibGUI implements IDataEventListener, ActionListener, Calibr
 
         //CalCons.calib.setDoubleValue(1.0, "constant", sector, layer,component);
         //CalCons.calib.fireTableDataChanged();
+        //ALERTCalibrationEngine.calib.save("t0b_out.txt");
+        saveFile("test.txt",ALERTCalibrationEngine.calib,4);
+
         resetEventListener();
 
 
@@ -300,5 +305,30 @@ public class ALERTCalibGUI implements IDataEventListener, ActionListener, Calibr
         this.veffConsts = veffConsts;
         this.twConsts = twConsts;
         this.attlenConsts = attlenConsts;
+    }
+    public void saveFile(String filename, CalibrationConstants calib, int indexOrder){
+        List<String> linesFile = new ArrayList();
+        Map<Long, IndexedTable.IndexedEntry> map = calib.getList().getMap();
+        int nindex = calib.getList().getIndexSize();
+        for(Map.Entry<Long, IndexedTable.IndexedEntry> entry : map.entrySet()) {
+            StringBuilder str = new StringBuilder();
+
+            for(int j = 0; j < nindex; ++j) {
+                str.append(String.format("%3d ", IndexedList.IndexGenerator.getIndex((Long)entry.getKey(), j)));
+            }
+
+            int ncolumns = ((IndexedTable.IndexedEntry)entry.getValue()).getSize();
+
+            for(int j = 0; j < ncolumns; ++j) {
+                if(j == 0 && indexOrder == 4){
+                    str.append(String.format("  %d  ", ((IndexedTable.IndexedEntry)entry.getValue()).getValue(j)));
+                }else {
+                    str.append(String.format("  %e  ", ((IndexedTable.IndexedEntry) entry.getValue()).getValue(j)));
+                }
+            }
+
+            linesFile.add(str.toString());
+        }
+        ClasUtilsFile.writeFile(filename, linesFile);
     }
 }

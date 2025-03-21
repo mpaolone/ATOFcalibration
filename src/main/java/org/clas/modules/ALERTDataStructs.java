@@ -28,6 +28,7 @@ public class ALERTDataStructs implements IDataEventListener{
     public static H2F wbAlign[][][] = new H2F [15][4][10]; //component
     public static H1F VeffWedge[][][] = new H1F[15][4][11];
     public static H2F AttenLen[][] = new H2F[15][4];
+    public static H2F T0;
    // public static ALERTDatabaseConstantProvider dcp = new ALERTDatabaseConstantProvider();
    // public static ALERTDatabaseConstantProvider dcp = null;
     public static CalibrationConstants timeOffConsts = null;
@@ -45,6 +46,17 @@ public class ALERTDataStructs implements IDataEventListener{
     private double tw_default = 0.0;
     private double attlen_default = 1.0;
     private double t0_default = 0.0;
+
+    private static int numSector = 15;
+    private static int numLayer = 4;
+    private static int numComp = 11;
+    private static int numOrder = 2;
+
+    public int PMTtoIndex(int sector, int layer, int component, int order){
+        int indexOrder = component + order;
+        int indexN = sector*(numLayer*(numComp+1)) + layer*(numComp + 1) + indexOrder;
+        return indexN;
+    }
 
     public ALERTDataStructs(CalibrationConstants timeOffConsts,
                             CalibrationConstants twConsts,
@@ -129,13 +141,13 @@ public class ALERTDataStructs implements IDataEventListener{
     public void setTracksMC(DataEvent event, ArrayList<ATOFBar> barList){
         DataBank trackBank = event.getBank("MC::True");
         if (event.hasBank("MC::True")) {
-            System.out.println("found MC bank");
+            //System.out.println("found MC bank");
             for (int i = 0; i < trackBank.rows(); i++) {
                 int detector = trackBank.getInt("detector",i);
                 double x = trackBank.getFloat("avgX",i);
                 double y = trackBank.getFloat("avgY",i);
                 double z = trackBank.getFloat("avgZ",i);
-                System.out.println(i + "  " + detector);
+                //System.out.println(i + "  " + detector);
                 if(detector == 24){
                     int PhiBlock = XYtoPhiBlock(x,y);
                     for (ATOFBar bar : barList) {
@@ -153,7 +165,7 @@ public class ALERTDataStructs implements IDataEventListener{
         ArrayList<ATOFBar> barList = new ArrayList<ATOFBar>();
         ArrayList<ATOFHit> hitList_0 = new ArrayList<ATOFHit>();
         ArrayList<ATOFHit> hitList_1 = new ArrayList<ATOFHit>();
-        System.out.println("in getBars list");
+        //System.out.println("in getBars list");
         for (ATOFHit hit : hitList) {
             if(hit.order == 1) System.out.println(hit.component);
             if (hit.component == 10 && hit.order == 0) {
@@ -245,7 +257,8 @@ public class ALERTDataStructs implements IDataEventListener{
                             for(int l =0; l < 1; l++) {
                                 DataGroup TempGroup2 = new DataGroup(1, 1);
                                 TempGroup2.addDataSet(Pedestal[i][j][k][l], 0);
-                                dataGroups.add(TempGroup2, i, j, k, l);
+                                //dataGroups.add(TempGroup2, i, j, k, l);
+                                dataGroups.add(TempGroup2, i, j, k);
                             }
                         }
                     }
@@ -272,7 +285,7 @@ public class ALERTDataStructs implements IDataEventListener{
                     for (int j = 0; j < 4; j++) {
                             DataGroup TempGroup2 = new DataGroup(1, 1);
                             TempGroup2.addDataSet(fbAlign[i][j], 0);
-                            dataGroups.add(TempGroup2, i, j);
+                            dataGroups.add(TempGroup2, i, j,10);
                     }
                 }
                 System.out.println("Passing to DG_Passer");
@@ -327,7 +340,7 @@ public class ALERTDataStructs implements IDataEventListener{
                 VeffWedge[sector][layer][component].fill(veff_wedge);
             }
             if (event.getType() == DataEventType.EVENT_STOP) {
-                System.out.println("the last event");
+                //System.out.println("the last event");
                 for (int i = 0; i < 15; i++) {
                     for (int j = 0; j < 4; j++) {
                         for (int k = 0; k <= 10; k++) {
@@ -364,12 +377,45 @@ public class ALERTDataStructs implements IDataEventListener{
             }
             if (event.getType() == DataEventType.EVENT_STOP) {
                 for (int i =0;i<15;i++){
-                    for (int j=0;j<5;j++){
+                    for (int j=0;j<4;j++){
                         DataGroup TempGroup2 = new DataGroup(1, 1);
                         TempGroup2.addDataSet(AttenLen[i][j], 0);
                         dataGroups.add(TempGroup2, i, j, 10);
                     }
                 }
+                Pass.DG_Passer(dataGroups,name);
+            }
+        }
+
+        else if( name.equals("T0")){
+            System.out.println("T0");
+            for (ATOFHit hit : hits) {
+                sector = hit.sector;
+                component = hit.component;
+                layer = hit.layer;
+                order = hit.order;
+                T0.fill(PMTtoIndex(sector, layer, component, order), hit.time);
+            }
+
+            for (ATOFBar bar : bars) {
+                fbAlign[bar.sector][bar.layer].fill(bar.getTdiff());
+            }
+
+
+            if (event.getType() == DataEventType.EVENT_STOP) {
+                System.out.println("at Event stop");
+                for (int i =0;i<15;i++){
+                    for (int j=0;j<4;j++){
+                        for (int k=0;k<=10;k++) {
+                            DataGroup TempGroup2 = new DataGroup(2, 1);
+                            TempGroup2.addDataSet(T0, 0);
+                            TempGroup2.addDataSet(fbAlign[i][j], 1);
+                            dataGroups.add(TempGroup2, i, j, k);
+                        }
+                    }
+                }
+                System.out.println("at end of adding datagroup");
+                dataGroups.show();
                 Pass.DG_Passer(dataGroups,name);
             }
         }
@@ -394,7 +440,7 @@ public class ALERTDataStructs implements IDataEventListener{
 
             if (event.getType() == DataEventType.EVENT_STOP) {
                 for (int i =0;i<15;i++){
-                    for (int j=0;j<5;j++){
+                    for (int j=0;j<4;j++){
                         for (int k=0;k<=10;k++) {
                             for(int l = 0; l < 1; l++) {
                                 DataGroup TempGroup2 = new DataGroup(1, 1);
@@ -447,7 +493,8 @@ public class ALERTDataStructs implements IDataEventListener{
         }
 
 
-       else if (Module.equals("FBAlign")) {
+       //else if (Module.equals("FBAlign")) {
+        else if (Module.equals("FBAlign")) {
             System.out.println("Initialize FBAlign Histograms");
             for (int i=0; i<15;i++){
                 for (int j = 0; j < 4; j++){
@@ -492,6 +539,15 @@ public class ALERTDataStructs implements IDataEventListener{
                             VeffWedge[i][j][k] = new H1F("VeffWedge", Hist_Name, 100, -1000, 1000);
                         //}
                     }
+                }
+            }
+        }
+        else if(Module.equals("T0")){
+            T0 = new H2F("T0",660,1,660,100,0,5);
+            for (int i=0; i<15;i++){
+                for (int j = 0; j < 4; j++){
+                    String Hist_Name = String.format("FrontBack_%d_%d", i, j);
+                    fbAlign[i][j] = new H1F("fbAlignment",Hist_Name,20,-10,10);
                 }
             }
         }
