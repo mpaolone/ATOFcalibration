@@ -13,12 +13,17 @@ public class ATOFBar {
     public double ToT_back = 0;
     public double zhit = 0.0;
     public int PhiBlock = 0;
+    public int trackId = -1;
+    //propTime is the time the particle spends traveling from the vertex to the bar.
+    public double propTime = 0;
 
     public boolean hasTrackHit = false;
 
     public void setTrackZhit(double zhit){
         this.zhit = zhit;
     }
+    public void setTrackId(int trackId){this.trackId = trackId;}
+    public void setPropTime(double propTime){this.propTime = propTime;}
 
     public ATOFBar(int sector, int layer, int component, double time_front, double time_back, double ToT_front, double ToT_back){
         this.component = component;
@@ -97,6 +102,12 @@ public class ATOFBar {
     public double getLogRat(){
         System.out.println(Math.log(ToT_front/ToT_back));
         return Math.log(ToT_front/ToT_back);
+    }
+    public double getZeroTimeU(double vtime, double veff, double T0u, double twu){
+        return time_front - propTime - vtime - T0u - twu - veff/(lbar/2.0 - zhit);
+    }
+    public double getZeroTimeD(double vtime, double veff, double T0d, double twd){
+        return time_back - propTime - vtime - T0d - twd - veff/(lbar/2.0 + zhit);
     }
 
 }

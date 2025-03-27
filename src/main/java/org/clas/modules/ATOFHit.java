@@ -8,6 +8,7 @@ public class ATOFHit{
     public int order = 0;
     public double time = 0;
     public double ToT = 0;
+    public double zeroTime = 0;
     private double tdc_to_time = 0.015625;
 
     public ATOFHit(int sector, int layer, int component, int order, double time, double ToT){
@@ -17,5 +18,10 @@ public class ATOFHit{
         this.order = order;
         this.time = time*tdc_to_time;
         this.ToT = ToT;
+        this.zeroTime = time*tdc_to_time;
+    }
+
+    public void setZeroTime(double vertexTime, double propTime){
+        this.zeroTime = this.time - vertexTime - propTime;
     }
 }

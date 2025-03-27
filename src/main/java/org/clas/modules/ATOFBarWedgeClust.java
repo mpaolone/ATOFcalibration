@@ -47,9 +47,12 @@ public class ATOFBarWedgeClust {
         }
         return veff;
     }
+    public double getZeroTime(double vtime, double T0, double tw, double veff){
+        return wedgeTime - bar.propTime - vtime - T0 - tw - lwedge/veff;
+    }
 
 
     public double getTdiff(double veff, double tw){
-        return wedgeTime - lwedge/veff -tw - bar.getRedTavg(veff);
+        return wedgeTime - lwedge/veff - tw - bar.getRedTavg(veff);
     }
 }

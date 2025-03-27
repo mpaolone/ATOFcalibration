@@ -68,7 +68,7 @@ public class ALERTTimeWalkCalibration {
                     //H2F h2 = (H2F) ds.SCDG.getH2(raw_a, raw_t);
 
                     TimeWalk[sector][slayer][comp] = ds.getItem(sector, slayer, comp).getH2F("TW");
-                    TimeWalk[sector][slayer][comp].setTitleX("ADC");
+                    TimeWalk[sector][slayer][comp].setTitleX("ToT");
                     TimeWalk[sector][slayer][comp].setTitleY("time");
                     //H2F TimeWalk = ds.getH2F("TW");
                     //F1D f2 = new F1D("f2", "[a]*x*x + [b]*x + [c]", -250.0, 250.0);
@@ -108,7 +108,10 @@ public class ALERTTimeWalkCalibration {
 
                     System.out.println("Fit Parameter 0 "+ Param0);
 
-                    ALERTCalConstants CalibConstant = new ALERTCalConstants();
+                    ALERTCalibrationEngine.calib.setDoubleValue(Param0,
+                            "tw0", sector, slayer, comp);
+
+                    //ALERTCalConstants CalibConstant = new ALERTCalConstants();
                     //CalibConstant.NewCalConstants("TimeWalk", (float) Param0);
 
                     //ALERTCalibGUI DrawHisto = new ALERTCalibGUI();
@@ -120,11 +123,6 @@ public class ALERTTimeWalkCalibration {
                 }
             }
         }
-        Calib_TW.calib.fireTableDataChanged();
-        ALERTCalConstants Cal_Passer = new ALERTCalConstants();
-        //Cal_Passer.Calib_Passer();
-        ALERTCalibGUI DrawHisto = new ALERTCalibGUI();
-        DrawHisto.Draw(TimeWalk[0][0][0], f2);
-
+        ALERTCalibrationEngine.calib.fireTableDataChanged();
     }
 }

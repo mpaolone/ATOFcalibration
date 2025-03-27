@@ -29,6 +29,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.io.*;
 
 public class ALERTCalibGUI implements IDataEventListener, ActionListener, CalibrationConstantsListener, DetectorListener{
 
@@ -51,6 +52,24 @@ public class ALERTCalibGUI implements IDataEventListener, ActionListener, Calibr
     public static CalibrationConstants twConsts = null;
     public static CalibrationConstants veffConsts = null;
     public static CalibrationConstants attlenConsts = null;
+
+    public void updateFile() throws IOException {
+        String fileName = "test.txt"; // Replace with your file name
+        String newName = ce.PassModule + ".txt";
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName));
+             BufferedWriter writer = new BufferedWriter(new FileWriter(newName))) {
+
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split("\\s+"); // Split line by whitespace
+                if (parts.length >= 3) {
+                    parts[2] = parts[2].replace("11", "10"); // Replace in third column
+                }
+                writer.write(" "+String.join("   ", parts));
+                writer.newLine();
+            }
+        }
+    }
 
     private void initializeGui(){
 
@@ -169,8 +188,15 @@ public class ALERTCalibGUI implements IDataEventListener, ActionListener, Calibr
         //CalCons.calib.setDoubleValue(1.0, "constant", sector, layer,component);
         //CalCons.calib.fireTableDataChanged();
         //ALERTCalibrationEngine.calib.save("t0b_out.txt");
-        saveFile("test.txt",ALERTCalibrationEngine.calib,4);
 
+        if(ce.PassModule.equals("Veff") || ce.PassModule.equals("Atten")){
+            saveFile("test.txt",ALERTCalibrationEngine.calib,3);
+        }else saveFile("test.txt",ALERTCalibrationEngine.calib,4);
+        try {
+            updateFile();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         resetEventListener();
 
 

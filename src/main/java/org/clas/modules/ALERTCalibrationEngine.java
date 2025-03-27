@@ -196,6 +196,50 @@ public class ALERTCalibrationEngine extends CalibrationEngine {
                         calib.setDoubleValue(0.0, "extra1", isec, suplayer, ipad);
                         calib.setDoubleValue(0.0, "extra2", isec, suplayer, ipad);
                     }
+                    if(moduleName.equals("Atten")){
+                        calib.addEntry(isec, suplayer, ipad);
+                        calib.setIntValue(0, "order", isec, suplayer, ipad);
+                        calib.setDoubleValue(0.0, "atten", isec, suplayer, ipad);
+                        calib.setDoubleValue(0.0, "datten", isec, suplayer, ipad);
+                        calib.setDoubleValue(0.0, "extra1", isec, suplayer, ipad);
+                        calib.setDoubleValue(0.0, "extra2", isec, suplayer, ipad);
+                        if(ipad == 10){
+                            calib.addEntry(isec, suplayer, ipad+1);
+                            calib.setIntValue(1, "order", isec, suplayer, ipad+1);
+                            calib.setDoubleValue(0.0, "atten", isec, suplayer, ipad+1);
+                            calib.setDoubleValue(0.0, "datten", isec, suplayer, ipad+1);
+                            calib.setDoubleValue(0.0, "extra1", isec, suplayer, ipad+1);
+                            calib.setDoubleValue(0.0, "extra2", isec, suplayer, ipad+1);
+                        }
+                    }
+                    if(moduleName.equals("TW")){
+                        calib.addEntry(isec, suplayer, ipad);
+                        calib.setIntValue(0, "order", isec, suplayer, ipad);
+                        calib.setDoubleValue(0.0, "tw0", isec, suplayer, ipad);
+                        calib.setDoubleValue(0.0, "tw1", isec, suplayer, ipad);
+                        calib.setDoubleValue(0.0, "tw2", isec, suplayer, ipad);
+                        calib.setDoubleValue(0.0, "tw3", isec, suplayer, ipad);
+                        calib.setDoubleValue(0.0, "dtw0", isec, suplayer, ipad);
+                        calib.setDoubleValue(0.0, "dtw1", isec, suplayer, ipad);
+                        calib.setDoubleValue(0.0, "dtw2", isec, suplayer, ipad);
+                        calib.setDoubleValue(0.0, "dtw3", isec, suplayer, ipad);
+                        calib.setDoubleValue(0.0, "dtw3", isec, suplayer, ipad);
+                        calib.setDoubleValue(0.0, "chi2ndf", isec, suplayer, ipad);
+                        if(ipad == 10){
+                            calib.addEntry(isec, suplayer, ipad+1);
+                            calib.setIntValue(1, "order", isec, suplayer, ipad+1);
+                            calib.setDoubleValue(0.0, "tw0", isec, suplayer, ipad+1);
+                            calib.setDoubleValue(0.0, "tw1", isec, suplayer, ipad+1);
+                            calib.setDoubleValue(0.0, "tw2", isec, suplayer, ipad+1);
+                            calib.setDoubleValue(0.0, "tw3", isec, suplayer, ipad+1);
+                            calib.setDoubleValue(0.0, "dtw0", isec, suplayer, ipad+1);
+                            calib.setDoubleValue(0.0, "dtw1", isec, suplayer, ipad+1);
+                            calib.setDoubleValue(0.0, "dtw2", isec, suplayer, ipad+1);
+                            calib.setDoubleValue(0.0, "dtw3", isec, suplayer, ipad+1);
+                            calib.setDoubleValue(0.0, "dtw3", isec, suplayer, ipad+1);
+                            calib.setDoubleValue(0.0, "chi2ndf", isec, suplayer, ipad+1);
+                        }
+                    }
 
 
                     else if(moduleName.equals("T0")){
@@ -206,7 +250,7 @@ public class ALERTCalibrationEngine extends CalibrationEngine {
                         calib.setDoubleValue(0.0, "wedge_bar", isec, suplayer, ipad);
                         calib.setDoubleValue(0.0, "extra1", isec, suplayer, ipad);
                         calib.setDoubleValue(0.0, "extra2", isec, suplayer, ipad);
-                        //if(ipad == 10){
+                        if(ipad == 10){
                             calib.addEntry(isec, suplayer, ipad +1);
                             calib.setIntValue(1, "order", isec, suplayer, ipad +1);
                             calib.setDoubleValue(0.0, "t0", isec, suplayer, ipad +1);
@@ -214,7 +258,7 @@ public class ALERTCalibrationEngine extends CalibrationEngine {
                             calib.setDoubleValue(0.0, "wedge_bar", isec, suplayer, ipad +1);
                             calib.setDoubleValue(0.0, "extra1", isec, suplayer, ipad +1);
                             calib.setDoubleValue(0.0, "extra2", isec, suplayer, ipad +1);
-                        //}
+                        }
                     }
 
 
@@ -223,7 +267,7 @@ public class ALERTCalibrationEngine extends CalibrationEngine {
         }
         //System.out.println(calib_Table.calib.getColumnName(1));
         calib.fireTableDataChanged();
-        System.out.println(calib);
+        //System.out.println(calib);
 
     }
 
@@ -254,7 +298,7 @@ public class ALERTCalibrationEngine extends CalibrationEngine {
         Scanner Module_input = new Scanner(System.in);
         String ALERT_Detector = "SC";
         String Module;
-        System.out.println("Which Calibration? (Veff, Atten, TW)");
+        System.out.println("Which Calibration? (T0, Veff, Atten, TW)");
         ALERTCalibrationEngine Module_Setter = new ALERTCalibrationEngine();
         Module = Module_input.nextLine();
         System.out.println("Calibration will be done for:" + Module);

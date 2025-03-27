@@ -16,7 +16,7 @@ public class ALERTT0Calibration {
 
     private String fitMode = "RN"; // is fitMode a String -- ParallelSliceFitter line 48?
     private int fitMinEvents = 50;
-    private int backgroundSF = -1; // ParallelSliceFitter lines [61-66]
+    private int backgroundSF = 1; // ParallelSliceFitter lines [61-66]
     private float fitSliceMaxError = -1;
     public void calcT0(IndexedList<DataGroup> ds) {
 
@@ -37,24 +37,25 @@ public class ALERTT0Calibration {
         //String CalibName = "T0";
 
         H1F meanDist[][] = new H1F[15][4];
-        F1D fbFunc = new F1D("fbFunc","[amp]*gaus(x,[mean],[sigma])", -10.0, 10.0);
-
-
+        H1F wbDist[][][] = new H1F[15][4][12];
+        //F1D fbFunc = new F1D("fbFunc","[amp]*gaus(x,[mean],[sigma])", -10.0, 10.0);
+        F1D fbFunc = new F1D("fbFunc","[amp]/(pow(x - [mean],2) + pow([sigma],2))*[sigma]/3.14159/2.0 + [amp]*gaus(x,[mean],[sigma])/2.0", -10.0, 10.0);
+        F1D wbFunc = new F1D("wbFunc","[amp]/(pow(x - [mean],2) + pow([sigma],2))*[sigma]/3.14159/2.0 + [amp]*gaus(x,[mean],[sigma])/2.0", -10.0, 10.0);
         for (int sector = 0; sector < 15; sector++) {
             for (int slayer = 0; slayer < 4; slayer++) {
                 double mean = -1.0;
-                meanDist[sector][slayer] = ds.getItem(sector, slayer, 0).getH1F("fbAlignment");
+                meanDist[sector][slayer] = ds.getItem(sector, slayer, 10).getH1F("fbAlignment");
                 meanDist[sector][slayer].setTitleY("Time Diff");
                 int maxBin = meanDist[sector][slayer].getMaximumBin();
-                double maxPos = meanDist[sector][slayer].getXaxis().getBinCenter(maxBin);
-                double min_test = meanDist[sector][slayer].getMin();
+                //double maxPos = meanDist[sector][slayer].getXaxis().getBinCenter(maxBin);
+                //double min_test = meanDist[sector][slayer].getMin();
 
                 // minPos needs to be better defined. minBin doesn't exist
-                double minPos = maxPos - (2*maxPos);
-                fbFunc.setRange(minPos,maxPos);
+                //double minPos = maxPos - (2*maxPos);
+                //fbFunc.setRange(minPos,maxPos);
 
                 fbFunc.setParameter(0, meanDist[sector][slayer].getBinContent(maxBin));
-                fbFunc.setParLimits(0, meanDist[sector][slayer].getBinContent(maxBin)*0.7, meanDist[sector][slayer].getBinContent(maxBin)*1.2);
+                //fbFunc.setParLimits(0, meanDist[sector][slayer].getBinContent(maxBin)*0.7, meanDist[sector][slayer].getBinContent(maxBin)*1.2);
                 fbFunc.setParameter(1, 0.0);
                 fbFunc.setParameter(2, 1.0);
 
@@ -73,7 +74,18 @@ public class ALERTT0Calibration {
                         index = Calib_1.PMTtoIndex(sector, slayer, comp, 1);
                         ALERTCalibrationEngine.calib.setDoubleValue(gr.getDataY(index), "t0", sector, slayer, 11);
                         ALERTCalibrationEngine.calib.setDoubleValue(mean, "upstream_downstream", sector, slayer, 11);
+                        ALERTCalibrationEngine.calib.setDoubleValue(0.0, "wedge_bar", sector, slayer, comp);
+                        ALERTCalibrationEngine.calib.setDoubleValue(0.0, "wedge_bar", sector, slayer, 11);
+                    }else{
+                        wbDist[sector][slayer][comp] = ds.getItem(sector, slayer, comp).getH1F("wbAlignment");
+                        wbFunc.setParameter(0, wbDist[sector][slayer][comp].getBinContent(wbDist[sector][slayer][comp].getMaximumBin()));
+                        wbFunc.setParameter(1, 0.0);
+                        wbFunc.setParameter(2, 0.1);
+                        DataFitter.fit(wbFunc, wbDist[sector][slayer][comp], "HQ");
+
+                        ALERTCalibrationEngine.calib.setDoubleValue(wbFunc.getParameter(1), "wedge_bar", sector, slayer, comp);
                     }
+
                 }
             }
         }
