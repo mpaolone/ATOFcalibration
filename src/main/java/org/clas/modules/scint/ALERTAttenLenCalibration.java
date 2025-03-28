@@ -55,7 +55,7 @@ public class ALERTAttenLenCalibration {
                 AttLenHisto[sector][layer] = ds.getItem(sector, layer, 10).getH2F("Atten");
                 AttLenHisto[sector][layer].setTitleX("Hit Position");
                 AttLenHisto[sector][layer].setTitleY("log(totu/totd");
-                System.out.println("Histo entries: " + AttLenHisto[sector][layer].getEntries());
+                //System.out.println("Histo entries: " + AttLenHisto[sector][layer].getEntries());
                 ParallelSliceFitter psf = new ParallelSliceFitter(AttLenHisto[sector][layer]);
                 GraphErrors gr = new GraphErrors("gr");
                 psf.setFitMode(fitMode);
@@ -67,7 +67,7 @@ public class ALERTAttenLenCalibration {
                 gr = psf.getMeanSlices();
                 f2.setParameter(0, 0.0);
                 f2.setParameter(1, 2.0 / 200.0);
-                System.out.println("data size: " + gr.getDataSize(0));
+                //System.out.println("data size: " + gr.getDataSize(0));
                 try {
                     //Added Option "V"
                     DataFitter.fit(f2, gr, "V");
@@ -79,19 +79,19 @@ public class ALERTAttenLenCalibration {
                 double gradient = f2.getParameter(1);
                 double gradient_error = f2.parameter(1).error();
                 System.out.println("fit results: " + sector + " " + layer + ": " + gradient + " +/- " + gradient_error);
-                ALERTCalConstants CalibConstant = new ALERTCalConstants();
-                String CalibName = String.format("Atten_%d", sector);
 
                 double attlen = 2.0 / gradient;
                 double dattlen = 2.0 * gradient_error / gradient / gradient;
 
                 //ALERTCalibrationEngine Calib_1 = new ALERTCalibrationEngine();
-                Calib_1.calib.setDoubleValue(attlen, "attlen", sector, layer, 10);
-                Calib_1.calib.setDoubleValue(dattlen, "dattlen", sector, layer, 10);
+                for (int component = 0; component < 11; component++) {
+                    ALERTCalibrationEngine.calib.setDoubleValue(attlen, "attlen", sector, layer, component);
+                    ALERTCalibrationEngine.calib.setDoubleValue(dattlen, "dattlen", sector, layer, component);
+                }
                 //CalibConstant.NewCalConstants(CalibName, gradient);
             }
         }
-        Calib_1.calib.fireTableDataChanged();
+        ALERTCalibrationEngine.calib.fireTableDataChanged();
         //ALERTCalConstants Cal_Passer = new ALERTCalConstants();
         //Cal_Passer.Calib_Passer();
         //ALERTCalibGUI DrawHisto = new ALERTCalibGUI();

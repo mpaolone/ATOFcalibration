@@ -16,7 +16,7 @@ public class ALERTVeffCalibration {
 
     private int counter=0;
     private String fitMode = "RN"; // is fitMode a String -- ParallelSliceFitter line 48?
-    private int fitMinEvents = 50;
+    private int fitMinEvents = 10;
     private int backgroundSF = -1; // ParallelSliceFitter lines [61-66]
     private float fitSliceMaxError = -1;
     private GraphErrors fixGraph(GraphErrors graphIn, String graphName) {
@@ -103,25 +103,25 @@ public class ALERTVeffCalibration {
                         double dveff = 2.0 * gradient_error / gradient / gradient;
 
                         //ALERTCalibrationEngine Calib_1 = new ALERTCalibrationEngine();
-                        Calib_1.calib.setDoubleValue(veff, "veff", sector, slayer, comp);
-                        Calib_1.calib.setDoubleValue(dveff, "dveff", sector, slayer, comp);
+                        ALERTCalibrationEngine.calib.setDoubleValue(veff, "veff", sector, slayer, comp);
+                        ALERTCalibrationEngine.calib.setDoubleValue(dveff, "dveff", sector, slayer, comp);
                         //CalibConstant.NewCalConstants(CalibName, gradient);
                     }else{
                         VeffWedgeHisto[sector][slayer][comp] =
                                 ds.getItem(sector, slayer, comp).getH1F("VeffWedge");
-                        Calib_1.calib.setDoubleValue(VeffWedgeHisto[sector][slayer][comp].getMean(),
+                        ALERTCalibrationEngine.calib.setDoubleValue(VeffWedgeHisto[sector][slayer][comp].getMean(),
                                 "veff", sector, slayer, comp);
-                        Calib_1.calib.setDoubleValue(VeffWedgeHisto[sector][slayer][comp].getRMS(),
+                        ALERTCalibrationEngine.calib.setDoubleValue(VeffWedgeHisto[sector][slayer][comp].getRMS(),
                                 "dveff", sector, slayer, comp);
                     }
-                    ALERTCalibGUI DrawHisto = new ALERTCalibGUI();
-                    DrawHisto.Draw(VeffHisto[sector][slayer][comp], f2);
+                    //ALERTCalibGUI DrawHisto = new ALERTCalibGUI();
+                   // DrawHisto.Draw(VeffHisto[sector][slayer][comp], f2);
                 }
             }
         }
 
 
-        Calib_1.calib.fireTableDataChanged();
+        ALERTCalibrationEngine.calib.fireTableDataChanged();
         //ALERTCalConstants Cal_Passer = new ALERTCalConstants();
         //Cal_Passer.Calib_Passer();
 

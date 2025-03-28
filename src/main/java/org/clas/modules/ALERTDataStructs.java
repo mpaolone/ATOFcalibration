@@ -164,23 +164,27 @@ public class ALERTDataStructs implements IDataEventListener{
     public void setTracks(DataEvent event, ArrayList<ATOFBar> barList){
         DataBank projBank = event.getBank("ALERT::Projections");
         DataBank trackBank = event.getBank("AHDC::Track");
-        if (event.hasBank("ALERT::Projections")) System.out.println("has proj banks");
+        //if (event.hasBank("ALERT::Projections")) System.out.println("has proj banks");
         if (event.hasBank("ALERT::Projections") && event.hasBank("AHDC::Track")) {
-            System.out.println("has track banks");
+            //System.out.println("num of rows in projBank: " + projBank.rows());
+            //System.out.println("num of rows in trackBank: " + trackBank.rows());
             for (int i = 0; i < projBank.rows(); i++) {
-                short id = projBank.getShort("trackID",i);
                 double x = projBank.getFloat("x_at_bar",i);
+                //int id = projBank.getInt("trackID",i);
+                int id = 0;
+                //System.out.println("x: " + x);
                 double y = projBank.getFloat("y_at_bar",i);
                 double z = projBank.getFloat("z_at_bar",i);
                 double L = projBank.getFloat("L_at_bar",i);
+
                 double px = trackBank.getFloat("px",i);
                 double py = trackBank.getFloat("py",i);
                 double pz = trackBank.getFloat("pz",i);
-                double p = Math.sqrt(px*px + py*py + pz*pz);
+                double p = Math.sqrt(px*px + py*py + pz*pz)/1000.0;
                 double M = 0.938272; //set to proton now, but should be set according to PID!!!
                 double E = Math.sqrt(p*p + M*M);
-                double gamma = p/E;
-                double v = 2.998e11*Math.sqrt(1.0 - 1.0/(gamma*gamma));
+                double beta = p/E;
+                double v = 2.998e11*beta;
                 double ptime = L/v*1.0e9;
                 System.out.println("ptime: " + ptime);
 
@@ -353,8 +357,6 @@ public class ALERTDataStructs implements IDataEventListener{
             }
         }
 
-
-
         else if (name.equals("Veff")) {
             for (ATOFBar bar : bars) {
                 sector = bar.sector;
@@ -373,7 +375,9 @@ public class ALERTDataStructs implements IDataEventListener{
                         twConsts.getDoubleValue("tw2",sector,layer,component,1));
                 double veff_new = bar.getRedTdiff(twu,twd);
                 //Veff[sector][layer][component].fill(bar.zhit, bar.getRedTdiff(veff,twu,twd));
-                Veff[sector][layer][component].fill(bar.zhit, veff_new);
+                if(bar.zhit != 0.0) {
+                    Veff[sector][layer][component].fill(bar.zhit, veff_new);
+                }
                 //System.out.println(event.getType());
             }
             for (ATOFBarWedgeClust clust : clusts) {
@@ -390,7 +394,12 @@ public class ALERTDataStructs implements IDataEventListener{
                         twConsts.getDoubleValue("tw1",sector,layer,10,1),
                         twConsts.getDoubleValue("tw2",sector,layer,10,1));
                 double veff_bar = veffConsts.getDoubleValue("veff",sector,layer,10);
-                clust.setBarParams(veff_bar, twu, twd);
+
+                if(veff_bar < 100 || veff_bar > 300) {
+                    clust.setBarParams(200.0, twu, twd);
+                }else{
+                    clust.setBarParams(veff_bar, twu, twd);
+                }
                 double tww = twEval(clust.wedgeToT,
                         twConsts.getDoubleValue("tw0",sector,layer,component,0),
                         twConsts.getDoubleValue("tw1",sector,layer,component,0),
@@ -438,9 +447,11 @@ public class ALERTDataStructs implements IDataEventListener{
             if (event.getType() == DataEventType.EVENT_STOP) {
                 for (int i =0;i<15;i++){
                     for (int j=0;j<4;j++){
-                        DataGroup TempGroup2 = new DataGroup(1, 1);
-                        TempGroup2.addDataSet(AttenLen[i][j], 0);
-                        dataGroups.add(TempGroup2, i, j, 10);
+                        for (int k=0;k<=11;k++) {
+                            DataGroup TempGroup2 = new DataGroup(1, 1);
+                            TempGroup2.addDataSet(AttenLen[i][j], 0);
+                            dataGroups.add(TempGroup2, i, j, k);
+                        }
                     }
                 }
                 Pass.DG_Passer(dataGroups,name);
@@ -579,7 +590,7 @@ public class ALERTDataStructs implements IDataEventListener{
                 for (int j = 0; j < 4; j++) {
                     for (int k=0;k<=11;k++) {
                         String Hist_Name = String.format("TW_%d_%d_%d", i, j, k);
-                        TW[i][j][k] = new H2F("TW", Hist_Name, 100, 0, 2000, 10, -2, 2);
+                        TW[i][j][k] = new H2F("TW", Hist_Name, 20, 0, 2000, 20, -2, 2);
                     }
                 }
             }

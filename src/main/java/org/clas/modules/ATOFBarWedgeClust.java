@@ -6,9 +6,9 @@ public class ATOFBarWedgeClust {
     public int sector = 0;
     public int layer = 0;
     private double lwedge = 20.0; //length of bar front to pmt on back of wedge in cm
-    private double barVeff = 200;
-    private double barUpTW = 0;
-    private double barDownTW = 0;
+    private double barVeff = 200.0;
+    private double barUpTW = 0.0;
+    private double barDownTW = 0.0;
     private double barThickness = 3.0;
     private double tcut = 5.0; //time cut for veff calc.  both abr and wedge time must be smaller than this
 
@@ -42,6 +42,7 @@ public class ATOFBarWedgeClust {
     public double calcVeff(double tw){
         double barTime = bar.avgBarHitTime(barVeff, barUpTW, barDownTW);
         double veff = lwedge/(wedgeTime - tw - barTime - barThickness/barVeff);
+        System.out.println("times: " + wedgeTime + "  " + tw + "  " + barTime + "  " + barThickness/barVeff + "  " + (wedgeTime - tw - barTime - barThickness/barVeff));
         if((barTime > tcut) || (wedgeTime > tcut)){
             return 1.0e10;
         }
