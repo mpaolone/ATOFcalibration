@@ -34,11 +34,7 @@ import java.io.*;
 public class ALERTCalibGUI implements IDataEventListener, ActionListener, CalibrationConstantsListener, DetectorListener{
 
     private final int npaddles = 4;
-    //public IndexedList<DataGroup> dataGroups_Constants = new IndexedList<DataGroup>(3);
-    //public ALERTCalConstants ce = null;
     public JPanel mainPanel = null;
-    public JPanel mainPanel2 = null;
-    public JPanel mainPanel3 = null;
     public JTabbedPane motherPane=null;
     public DataSourceProcessorPane processorPane = null;
     public JSplitPane splitPanel = null;
@@ -53,6 +49,10 @@ public class ALERTCalibGUI implements IDataEventListener, ActionListener, Calibr
     public static CalibrationConstants veffConsts = null;
     public static CalibrationConstants attlenConsts = null;
 
+    //All PMTs have order=0 except one side of the bar, which has order=1.  In the standard calib table, the order is
+    // not recognized as a separate indexed value, so there cannot be two items with component=10.  The work around it
+    // to define the order=1 as component=11, and fix later.  This is the "fix later" code, that takes the output text
+    // and converts it.  Note: NOT THREAD SAFE.
     public void updateFile() throws IOException {
         String fileName = "test.txt"; // Replace with your file name
         String newName = ce.PassModule + ".txt";
@@ -78,8 +78,6 @@ public class ALERTCalibGUI implements IDataEventListener, ActionListener, Calibr
 
         motherPane =new JTabbedPane();
         mainPanel = new JPanel();
-        // mainPanel2 = new JPanel();
-        // mainPanel3 = new JPanel();
         mainPanel.setLayout(new BorderLayout());
 
 
@@ -95,8 +93,6 @@ public class ALERTCalibGUI implements IDataEventListener, ActionListener, Calibr
         moduleView = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
         canvas = new EmbeddedCanvas();
         ccview = new CalibrationConstantsView();
-        // System.out.println("GetCalCon"+ce.getCalibrationConstants());
-
 
         ccview.addConstants(ce.getCalibrationConstants().get(0),this);
         moduleView.setTopComponent(canvas);
@@ -105,46 +101,13 @@ public class ALERTCalibGUI implements IDataEventListener, ActionListener, Calibr
         moduleView.setResizeWeight(0.6);
 
         splitPanel = new JSplitPane();
-        //splitPanel.setLeftComponent(null);
         splitPanel.setLeftComponent(detectorView);
         splitPanel.setRightComponent(moduleView);
         processorPane = new DataSourceProcessorPane();
         processorPane.setUpdateRate(10000);
         processorPane.addEventListener(this);
-
-        String timestamp = ""; //needs to be loaded
-        // provider = new ALERTDatabaseConstantProvider(1, "default",timestamp);
-        //IndexedTable table = provider.readTable("/test/test_vars/alert_dc_status4");
-        //IndexedTable table = provider.readTable("/test/test_vars/test_dc_aler_stat0");
-        //IndexedTable table = provider.readTable("/calibration/dc/tracking/wire_status");
-
-        //provider.disconnect();
-
-        //JFrame frame = new JFrame();
-        //frame.setSize(600, 600);
-        //IndexedTableViewer canvas = new IndexedTableViewer(table);
-        //frame.add(canvas);
-        //frame.pack();
-        // frame.setVisible(true);
-
-
         mainPanel.add(splitPanel);
         mainPanel.add(processorPane, BorderLayout.PAGE_END);
-        //mainPanel2.add(canvas);
-
-        //motherPane.add("DC",mainPanel2);
-        //motherPane.add("TC",mainPanel3);
-        //  motherPane.add("SC",splitPanel);
-        //  motherPane.add("SC",processorPane);
-
-
-/*        JFrame frame = new JFrame();
-        frame.add(motherPane);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLocationByPlatform(true);
-        frame.setSize(300, 300);
-        frame.setVisible(true);
-*/
     }
 
     public ALERTCalibGUI(){
@@ -161,34 +124,20 @@ public class ALERTCalibGUI implements IDataEventListener, ActionListener, Calibr
 
     public void constantsEvent(CalibrationConstants calibrationConstants, int i, int i1) {
 
-        //System.out.println("WHEN DOES CONSTANTS Events get called");
-        //ALERTCalibrationEngine ce2 = new ALERTCalibrationEngine();
-        //System.out.println("Well. it's working " + i + "  " + i1);
         String str_sector    = (String) calibrationConstants.getValueAt(i1, 0);
         String str_layer     = (String) calibrationConstants.getValueAt(i1, 1);
         String str_component = (String) calibrationConstants.getValueAt(i1, 2);
         String str_val = (String) calibrationConstants.getValueAt(i1, 3);
-        //System.out.println(str_sector + " " + str_layer + " " + str_component + " "+str_val);
         IndexedList<DataGroup> group = ce.getDataGroup();
 
         int sector    = Integer.parseInt(str_sector);
         int layer     = Integer.parseInt(str_layer);
         int component = Integer.parseInt(str_component);
 
-        //if(group.hasItem(sector,layer,component)==true){
         DataGroup dataGroup = group.getItem(sector,layer,component);
-        //DataGroup dataGroup = group.getItem(1,1);
         this.canvas.clear();
-        //this.canvas.draw()
         this.canvas.draw(dataGroup);
         this.canvas.update();
-        //ALERTCalibrationEngine CalCons = new ALERTCalibrationEngine();
-        //CalCons.calib.addEntry(sector,layer,component);
-
-        //CalCons.calib.setDoubleValue(1.0, "constant", sector, layer,component);
-        //CalCons.calib.fireTableDataChanged();
-        //ALERTCalibrationEngine.calib.save("t0b_out.txt");
-
         if(ce.PassModule.equals("Veff") || ce.PassModule.equals("Atten")){
             saveFile("test.txt",ALERTCalibrationEngine.calib,3);
         }else saveFile("test.txt",ALERTCalibrationEngine.calib,4);
@@ -204,7 +153,6 @@ public class ALERTCalibGUI implements IDataEventListener, ActionListener, Calibr
 
 
     public void dataEventAction(DataEvent dataEvent) {
-        //System.out.println("In Calib GUI dataEventAction");
         ALERTCalibrationEngine CalibrationRoutines = new ALERTCalibrationEngine();
         ALERTDataStructs Passing = new ALERTDataStructs(timeOffConsts, twConsts, veffConsts, attlenConsts);
         Passing.FillData(dataEvent,  CalibrationRoutines.PassModule);
@@ -306,7 +254,6 @@ public class ALERTCalibGUI implements IDataEventListener, ActionListener, Calibr
         frame.setSize(1400, 800);
         frame.setVisible(true);
     }
-
     public void Draw_H1(H1F blank, F1D fit) {
 // This is drawing an addititonal panel for each Calibration Method. Should be tweaked in order
 // to use the same Frame? An additional button to move through the different calibration methods?

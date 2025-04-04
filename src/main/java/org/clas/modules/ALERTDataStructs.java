@@ -376,7 +376,7 @@ public class ALERTDataStructs implements IDataEventListener{
                 double veff_new = bar.getRedTdiff(twu,twd);
                 //Veff[sector][layer][component].fill(bar.zhit, bar.getRedTdiff(veff,twu,twd));
                 if(bar.zhit != 0.0) {
-                    Veff[sector][layer][component].fill(bar.zhit, veff_new);
+                    Veff[sector][layer][component].fill(bar.zhit + 150.0, veff_new);
                 }
                 //System.out.println(event.getType());
             }
@@ -459,7 +459,7 @@ public class ALERTDataStructs implements IDataEventListener{
         }
 
         else if( name.equals("T0")){
-            System.out.println("T0");
+            //System.out.println("T0");
             /*
             for (ATOFHit hit : hits) {
                 sector = hit.sector;
@@ -483,7 +483,7 @@ public class ALERTDataStructs implements IDataEventListener{
 
 
             if (event.getType() == DataEventType.EVENT_STOP) {
-                System.out.println("at Event stop");
+                //System.out.println("at Event stop");
                 for (int i =0;i<15;i++){
                     for (int j=0;j<4;j++){
                         for (int k=0;k<=11;k++) {
@@ -613,7 +613,7 @@ public class ALERTDataStructs implements IDataEventListener{
                         //System.out.println(Hist_Name);
                         //Veff[i][j][k] = new H2F("Veff", Hist_Name, 80, -30, 60, 80, -20, 50);
                         //if(k == 10) {
-                            Veff[i][j][k] = new H2F("Veff", Hist_Name, 40, -150, 150, 40, -5, 5);
+                            Veff[i][j][k] = new H2F("Veff", Hist_Name, 20, -150, 150, 100, -5, 5);
                         //}else{
                             VeffWedge[i][j][k] = new H1F("VeffWedge", Hist_Name, 100, -1000, 1000);
                         //}

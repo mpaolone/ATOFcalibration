@@ -37,7 +37,7 @@ public class ALERTPedestalCalibration {
         }
         Calib_Ped.calib.fireTableDataChanged();
         ALERTCalibGUI DrawHisto = new ALERTCalibGUI();
-        DrawHisto.Draw_H1(hp[1][0][0], fp);
+        //DrawHisto.Draw_H1(hp[1][0][0], fp);
     }
 
 

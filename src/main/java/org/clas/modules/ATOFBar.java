@@ -4,20 +4,19 @@ public class ATOFBar {
     public int component = 0;
     public int sector = 0;
     public int layer = 0;
-    //private double lbar = 300.0; //40cm paddles
     private double lbar = 279.7; //40cm paddles
 
-    public double time_front = 0;
-    public double time_back = 0;
+    public double time_front = 0; //front is upstream (name needs to be changed and refactored)
+    public double time_back = 0; //back is downstream
     public double ToT_front = 0;
     public double ToT_back = 0;
     public double zhit = 0.0;
-    public int PhiBlock = 0;
-    public int trackId = -1;
+    public int PhiBlock = 0; //an index of (0 to 59) of the azimuthal collection of bar + 10 wedges, clockwise looking downstream, 0 at 12 o'clock
+    public int trackId = -1; //which reconstructed track is associated with the bar hit
     //propTime is the time the particle spends traveling from the vertex to the bar.
-    public double propTime = 0;
+    public double propTime = 0; //time of track from vertex to the bar
 
-    public boolean hasTrackHit = false;
+    public boolean hasTrackHit = false; //true when there is an associated track to the hits on the bar
 
     public void setTrackZhit(double zhit){
         this.zhit = zhit;
@@ -70,6 +69,7 @@ public class ATOFBar {
     //use all offsets
     public double getRedTdiff(double veff, double twu, double twd){
 
+
         if(veff == 0) veff = 200; //default;
         double l_front = lbar/2.0 - zhit;
         double l_back = lbar/2.0 + zhit;
@@ -80,18 +80,12 @@ public class ATOFBar {
 
         double tdiff = time_front - l_front/veff - twu - (time_back - l_back/veff - twd);
 
+
         //System.out.println(tdiff + "  " + zhit);
         return (tdiff);
     }
     public double avgBarHitTime(double veff, double twu, double twd){
-        if(veff == 0) veff = 200; //default;
-        double l_front = lbar/2.0 - zhit;
-        double l_back = lbar/2.0 + zhit;
-        if(l_front > lbar) l_front = lbar;
-        if(l_front < 0) l_front = 0;
-        if(l_back > lbar) l_back = lbar;
-        if(l_back < 0) l_back = 0;
-        double tavg = (time_front - l_front/veff - twu)/2.0 + (time_back - l_back/veff - twd)/2.0;
+        double tavg = getRedTavg(veff) - twu + twd;
         return tavg;
     }
 

@@ -81,13 +81,15 @@ public class ALERTVeffCalibration {
                         psf.setNthreads(1);
                         psf.fitSlicesX();
                         //gr.copy(fixGraph(psf.getMeanSlices(), "gr")); //fixGraph(GraphErrors graphIN, String graphName)
-                        gr = psf.getMeanSlices();
+                        //gr = psf.getMeanSlices();
+                        gr = VeffHisto[sector][slayer][comp].getProfileX();
                         f2.setParameter(0, 0.0);
                         f2.setParameter(1, 2.0 / 200.0);
                         System.out.println("data size: " + gr.getDataSize(0));
                         try {
                             //Added Option "V"
                             DataFitter.fit(f2, gr, "V");
+                            //DataFitter.fit(f2, VeffHisto[sector][slayer][comp], "V");
                             //DataFitter.fit(f2,gr,"RQ");
                         } catch (Exception e) {
                             System.out.println("Fit error ");

@@ -12,7 +12,6 @@ import javax.swing.*;
 import java.util.*;
 
 public class ALERTCalibrationEngine extends CalibrationEngine {
-    private final int npaddles = 4;
     private String                                  moduleName = null;
     private String                                  alertDetector = null;
     private ALERTDetector                           ALERT = null;
@@ -23,13 +22,6 @@ public class ALERTCalibrationEngine extends CalibrationEngine {
     public static CalibrationConstants attlenConsts = null;
     ConstantsManager ccdb = null; // What is constants manager and how is it meant to be used?
     private ALERTCalConstants                       constants = new ALERTCalConstants();
-    /*
-    public static CalibrationConstants timeOffsetCalCons;
-    public static CalibrationConstants veffCalCons;
-    public static CalibrationConstants twCalCons;
-    public static CalibrationConstants attenCalCons;
-    */
-    //public CalibrationConstants                   calib = null;
     public static CalibrationConstants calib = null;
     public  CalibrationConstants                    calib2 = null;
     private Map<String,CalibrationConstants> globalCalib = null;
@@ -43,19 +35,15 @@ public class ALERTCalibrationEngine extends CalibrationEngine {
 
 // Detector should be defined later: WC || SC
     public void ALERTCalibrationModule(String Detector,String ModuleName,int Precision) {
-        // System.out.println("Lets Define some properties");
-        //System.out.println("And Initialize Histo");
+        //System.out.println("Initializing Calibration Module");
         dbc = new ALERTDatabaseConstantProvider(1,"default","");
         timeOffConsts = dbc.readConstants("/calibration/alert/atof/time_offsets",4);
-        //timeOffConsts = dbc.readTable("/calibration/alert/atof/time_offsets",4);
         twConsts = dbc.readConstants("/calibration/alert/atof/time_walk");
         veffConsts = dbc.readConstants("/calibration/alert/atof/effective_velocity");
         attlenConsts = dbc.readConstants("/calibration/alert/atof/attenuation");
 
         ALERTDataStructs hist = new ALERTDataStructs(timeOffConsts, twConsts, veffConsts, attlenConsts);
         hist.Create_Fill_Histo2D(ModuleName);
-        //System.out.println("Finished Initialization");
-        //this.ALERT    = d;
         this.initModule(Detector,ModuleName, Precision);
         //this.resetEventListener();
         PassModule=ModuleName;
@@ -114,8 +102,6 @@ public class ALERTCalibrationEngine extends CalibrationEngine {
         this.alertDetector = detector;
         System.out.println("INITMODULE");
         this.moduleName = name;
-        //this.calib = new CalibrationConstants(3,Constants);
-        //calib = new CalibrationConstants(3, "constant");
         if (name.equals("Veff")) {
             calib = new CalibrationConstants(3, "veff/F:dveff/F:extra1/F:extra2/F");
         }
@@ -123,7 +109,6 @@ public class ALERTCalibrationEngine extends CalibrationEngine {
             calib = new CalibrationConstants(3, "atten/F:datten/F:extra1/F:extra2/F");
         }
         if (name.equals("T0")) {
-            //calib = new CalibrationConstants(4, "t0/F:upstream_downstream/F:wedge_bar/F:extra1/F:extra2/F");
             calib = new CalibrationConstants(3, "order/I:t0/F:upstream_downstream/F:wedge_bar/F:extra1/F:extra2/F");
         }
 
@@ -133,12 +118,6 @@ public class ALERTCalibrationEngine extends CalibrationEngine {
         // this corresponds to sector/layer/comp in CalibrationConstants.class
         calib.setName(name);
         calib.setPrecision(3);
-
-        //this.prevCalib = new CalibrationConstants(3,Constants);
-        //this.prevCalib.setName(name);
-        //this.setCalibrationTablePrecision(Precision);
-        //this.ccdb        = ccdb;
-        //this.globalCalib = gConstants;
         this.resetEventListener();
     }
 
@@ -165,7 +144,6 @@ public class ALERTCalibrationEngine extends CalibrationEngine {
             TW_Calib.calcTW(DG);
         }
         else if (name.equals("Veff")){
-            //System.out.println("Calling Veff");
             Veff_Calib.calcVEFF(DG);
         }
 
@@ -173,22 +151,16 @@ public class ALERTCalibrationEngine extends CalibrationEngine {
             Atten_Calib.calcATTLEN(DG);
         }
         else if(name.equals("T0")){
-            //System.out.println("DG index: " + DG.getIndexSize());
             T0_Calib.calcT0(DG);
-            System.out.println("running ud");
-            //FB_Calib.getMeanDifference(DG);
         }
     }
 
     @Override
     public void resetEventListener() {
         System.out.println("Resetting");
-        //ALERTCalConstants Calib_Const = new ALERTCalConstants();
-        //ALERTCalibrationEngine calib_Table = new ALERTCalibrationEngine();
         for (int isec = 0; isec < 15; isec++) {
             for (int suplayer = 0; suplayer < 4; suplayer++) {
                 for (int ipad = 0; ipad <= 10; ipad++) {
-                    //System.out.println("ADDING ENTRY");
                     if(moduleName.equals("Veff")){
                         calib.addEntry(isec, suplayer, ipad);
                         calib.setDoubleValue(0.0, "veff", isec, suplayer, ipad);
@@ -265,36 +237,23 @@ public class ALERTCalibrationEngine extends CalibrationEngine {
                 }
             }
         }
-        //System.out.println(calib_Table.calib.getColumnName(1));
         calib.fireTableDataChanged();
-        //System.out.println(calib);
 
     }
 
     @Override
     public List<CalibrationConstants> getCalibrationConstants() {
-        System.out.println("getCalibConstants!");
         System.out.println(Arrays.asList(calib));
         return Arrays.asList(calib);
     }
 
     @Override
     public IndexedList<DataGroup> getDataGroup() {
-        //return dataGroupCal;
         return ALERTDataStructs.dataGroups;
     }
 
-
-
+    /*
     public static void main(String[] args){
-
-        //establish constants
-        /*
-        timeOffsetCalCons = new CalibrationConstants(3,"T0/F:upstream_downstream/F:wedge_bar/F");
-        veffCalCons = new CalibrationConstants(3,"veff/F:dveff/F");
-        twCalCons = new CalibrationConstants(3,"tw0/F:tw1/F:tw2/F:dtw0/F:dtw1/F:dtw2/F");
-        attenCalCons = new CalibrationConstants(3,"attenlen/F:dattlen/F");
-*/
         Scanner Module_input = new Scanner(System.in);
         String ALERT_Detector = "SC";
         String Module;
@@ -310,7 +269,24 @@ public class ALERTCalibrationEngine extends CalibrationEngine {
         frame.add(viewer.mainPanel);
         frame.setSize(1400, 800);
         frame.setVisible(true);
+    }
+     */
 
-
+    public static void runGUI(){
+        Scanner Module_input = new Scanner(System.in);
+        String ALERT_Detector = "SC";
+        String Module;
+        System.out.println("Which Calibration? (T0, Veff, Atten, TW)");
+        ALERTCalibrationEngine Module_Setter = new ALERTCalibrationEngine();
+        Module = Module_input.nextLine();
+        System.out.println("Calibration will be done for:" + Module);
+        Module_Setter.ALERTCalibrationModule(ALERT_Detector,Module,1);
+        JFrame frame = new JFrame("Calibration");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        org.clas.modules.gui.ALERTCalibGUI viewer = new org.clas.modules.gui.ALERTCalibGUI(Module_Setter);
+        viewer.setCalibDB(timeOffConsts, twConsts, veffConsts, attlenConsts);
+        frame.add(viewer.mainPanel);
+        frame.setSize(1400, 800);
+        frame.setVisible(true);
     }
 }
