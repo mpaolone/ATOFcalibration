@@ -4,25 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="925d8a0b-b0f1-4060-9cbb-88af2f05fc94" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/T0.txt" beforeDir="false" afterPath="$PROJECT_DIR$/T0.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Veff.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Veff.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/clas/modules/ALERTCalibrationEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/clas/modules/ALERTCalibrationEngine.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/clas/modules/ALERTDataStructs.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/clas/modules/ALERTDataStructs.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/clas/modules/ATOFBar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/clas/modules/ATOFBar.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/clas/modules/gui/ALERTCalibGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/clas/modules/gui/ALERTCalibGUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/clas/modules/scint/ALERTPedestalCalibration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/clas/modules/scint/ALERTPedestalCalibration.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/clas/modules/scint/ALERTVeffCalibration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/clas/modules/scint/ALERTVeffCalibration.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/org/clas/modules/ALERTCalibrationEngine.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/clas/modules/ALERTCalibrationEngine.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/org/clas/modules/ALERTDataStructs.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/clas/modules/ALERTDataStructs.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/org/clas/modules/ATOFBar.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/clas/modules/ATOFBar.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/org/clas/modules/ATOFBarWedgeClust.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/clas/modules/ATOFBarWedgeClust.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/org/clas/modules/gui/ALERTCalibGUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/clas/modules/gui/ALERTCalibGUI.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/org/clas/modules/scint/ALERTPedestalCalibration.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/clas/modules/scint/ALERTPedestalCalibration.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/org/clas/modules/scint/ALERTVeffCalibration.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/clas/modules/scint/ALERTVeffCalibration.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test.txt" beforeDir="false" afterPath="$PROJECT_DIR$/test.txt" afterDir="false" />
-    </list>
+    <list default="true" id="925d8a0b-b0f1-4060-9cbb-88af2f05fc94" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -61,6 +43,9 @@
     "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/Users/mpaolone/work/clas12/atof/ATOFcalibration",
+    "project.structure.last.edited": "Artifacts",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
     "settings.editor.selected.configurable": "editing.templates"
   }
 }]]></component>
