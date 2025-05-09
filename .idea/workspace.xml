@@ -4,7 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="925d8a0b-b0f1-4060-9cbb-88af2f05fc94" name="Changes" comment="" />
+    <list default="true" id="925d8a0b-b0f1-4060-9cbb-88af2f05fc94" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/T0.txt" beforeDir="false" afterPath="$PROJECT_DIR$/T0.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/ATOFcalibration_jar/ATOFcalibration.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/ATOFcalibration_jar/ATOFcalibration.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/clas/modules/ALERTDataStructs.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/clas/modules/ALERTDataStructs.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/clas/modules/scint/ALERTT0Calibration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/clas/modules/scint/ALERTT0Calibration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/clas/modules/ALERTDataStructs.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/clas/modules/ALERTDataStructs.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/clas/modules/scint/ALERTT0Calibration.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/clas/modules/scint/ALERTT0Calibration.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test.txt" beforeDir="false" afterPath="$PROJECT_DIR$/test.txt" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -38,8 +47,10 @@
     "Application.ALERTDatabaseConstantProvider.executor": "Run",
     "Application.AppLauncher.executor": "Run",
     "Application.run.executor": "Run",
+    "JAR Application.ATOFcalibration.jar.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/Users/mpaolone/work/clas12/atof/ATOFcalibration",
@@ -55,19 +66,6 @@
     </key>
   </component>
   <component name="RunManager" selected="Application.AppLauncher">
-    <configuration name="ALERTCalibrationEngine (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="org.clas.modules.ALERTCalibrationEngine" />
-      <module name="ATOFcalibration" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="org.clas.modules.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="ALERTCalibrationEngine (2)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="org.clas.modules.ALERTCalibrationEngine" />
       <module name="ATOFcalibration" />
@@ -705,10 +703,14 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="ATOFcalibration.jar" type="JarApplication" temporary="true">
+      <option name="JAR_PATH" value="$PROJECT_DIR$/out/artifacts/ATOFcalibration_jar/ATOFcalibration.jar" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Application.AppLauncher" />
-        <item itemvalue="Application.ALERTCalibrationEngine" />
+        <item itemvalue="JAR Application.ATOFcalibration.jar" />
         <item itemvalue="Application.ALERTCalibrationEngine" />
         <item itemvalue="Application.ALERTCalibrationEngine" />
         <item itemvalue="Application.ALERTCalibrationEngine" />

@@ -64,7 +64,7 @@ public class ALERTT0Calibration {
                 //F1D fp = new F1D("gmFunc", "[amp]*landau(x,[mean],[sigma]) +[exp_amp]*exp([p]*x)",0.0, hvmax);
                 DataFitter.fit(fbFunc, meanDist[sector][slayer], "HQ");
                 mean = fbFunc.getParameter(1);
-                System.out.println("upstream_downstream mean: " + mean);
+                //System.out.println("upstream_downstream mean: " + mean);
 
                 for (int comp = 0; comp <= 10; comp++) {
                     int index = Calib_1.PMTtoIndex(sector, slayer, comp, 0);
