@@ -13,11 +13,13 @@ import org.jlab.io.base.DataEvent;
 import org.jlab.io.base.DataEventType;
 import org.jlab.io.task.IDataEventListener;
 import org.jlab.utils.groups.IndexedList;
+import org.clas.modules.geom.ALERTGeomAlign;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ALERTDataStructs implements IDataEventListener{
+    ALERTGeomAlign ALERT;
     public DataGroup SCDG;
     public static IndexedList<DataGroup> dataGroups = new IndexedList<DataGroup>(3);
     //public static H1F Pedestal[][][] = new H1F [16][3][5];
@@ -47,14 +49,12 @@ public class ALERTDataStructs implements IDataEventListener{
     private double attlen_default = 1.0;
     private double t0_default = 0.0;
 
-    private static int numSector = 15;
-    private static int numLayer = 4;
-    private static int numComp = 11;
-    private static int numOrder = 2;
+    private double ToTthresh = 1000; //threshold for ToT
 
     public int PMTtoIndex(int sector, int layer, int component, int order){
         int indexOrder = component + order;
-        int indexN = sector*(numLayer*(numComp+1)) + layer*(numComp + 1) + indexOrder;
+        int indexN = sector*(ALERT.getNumLayer()*(ALERT.getNumComp()+1))
+                + layer*(ALERT.getNumComp() + 1) + indexOrder;
         return indexN;
     }
 
@@ -471,14 +471,32 @@ public class ALERTDataStructs implements IDataEventListener{
             */
 
             for (ATOFBar bar : bars) {
-                T0.fill(PMTtoIndex(bar.sector, bar.layer, 10, 0), bar.time_front - bar.propTime);
-                T0.fill(PMTtoIndex(bar.sector, bar.layer, 10, 1), bar.time_back - bar.propTime);
-                fbAlign[bar.sector][bar.layer].fill(bar.getTdiff());
+                System.out.println("in bars");
+                if(bar.ToT_front > ToTthresh && bar.ToT_back > ToTthresh) {
+                    System.out.println("passed cutsT");
+                    T0.fill(PMTtoIndex(bar.sector, bar.layer, 10, 0), bar.time_front - bar.propTime);
+                    T0.fill(PMTtoIndex(bar.sector, bar.layer, 10, 1), bar.time_back - bar.propTime);
+                    fbAlign[bar.sector][bar.layer].fill(bar.getTdiff());
+                }
             }
 
             for(ATOFBarWedgeClust clust : clusts){
-                T0.fill(PMTtoIndex(clust.sector,clust.layer,clust.component, 0), clust.wedgeTime - clust.bar.propTime);
-                wbAlign[clust.sector][clust.layer][clust.component].fill(clust.getTdiff(veff_default,0.0));
+                double ToTmax = 0;
+                double timeMax = 0;
+                double tdiffMax = 0;
+                if(clust.wedgeToT > ToTmax) {
+                    timeMax = clust.wedgeTime;
+                    ToTmax = clust.wedgeToT;
+                    tdiffMax = clust.getTdiff(veff_default, 0.0);
+                }
+                /*
+                if(clust.bar.ToT_front > ToTthresh && clust.bar.ToT_back > ToTthresh && clust.wedgeToT > ToTthresh) {
+                    T0.fill(PMTtoIndex(clust.sector, clust.layer, clust.component, 0), clust.wedgeTime - clust.bar.propTime);
+                    wbAlign[clust.sector][clust.layer][clust.component].fill(clust.getTdiff(veff_default, 0.0));
+                }
+                 */
+                T0.fill(PMTtoIndex(clust.sector, clust.layer, clust.component, 0), timeMax - clust.bar.propTime);
+                wbAlign[clust.sector][clust.layer][clust.component].fill(tdiffMax);
             }
 
 
@@ -622,7 +640,7 @@ public class ALERTDataStructs implements IDataEventListener{
             }
         }
         else if(Module.equals("T0")){
-            T0 = new H2F("T0",660,1,660,100,0,5);
+            T0 = new H2F("T0",660,1,660,100,150,250);
             for (int i=0; i<15;i++){
                 for (int j = 0; j < 4; j++){
                     String Hist_Name = String.format("FrontBack_%d_%d", i, j);

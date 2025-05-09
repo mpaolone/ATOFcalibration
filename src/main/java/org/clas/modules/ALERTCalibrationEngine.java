@@ -7,14 +7,16 @@ import org.jlab.detector.calib.utils.ConstantsManager;
 import org.jlab.groot.group.DataGroup;
 import org.jlab.utils.groups.IndexedList;
 import org.jlab.utils.groups.IndexedTable;
-
+import org.clas.modules.geom.ALERTGeomAlign;
+        
 import javax.swing.*;
 import java.util.*;
 
 public class ALERTCalibrationEngine extends CalibrationEngine {
-    private String                                  moduleName = null;
-    private String                                  alertDetector = null;
-    private ALERTDetector                           ALERT = null;
+    ALERTGeomAlign ALERT;
+    private String moduleName = null;
+    private String alertDetector = null;
+    private ALERTChannel ALERTChannel = null;
     public static ALERTDatabaseConstantProvider dbc = null;
     public static CalibrationConstants timeOffConsts = null;
     public static CalibrationConstants twConsts = null;
@@ -26,10 +28,6 @@ public class ALERTCalibrationEngine extends CalibrationEngine {
     public  CalibrationConstants                    calib2 = null;
     private Map<String,CalibrationConstants> globalCalib = null;
     private final IndexedList<DataGroup> dataGroupCal = new IndexedList<DataGroup>(3);
-    public static int numSector = 15;
-    public static int numLayer = 4;
-    public static int numComp = 11;
-    public static int numOrder = 2;
     public static String PassModule;
 
 
@@ -57,13 +55,14 @@ public class ALERTCalibrationEngine extends CalibrationEngine {
 // appropriate sector,layer,component, and order
     public int PMTtoIndex(int sector, int layer, int component, int order){
         int indexOrder = component + order;
-        int indexN = sector*(numLayer*(numComp+1)) + layer*(numComp + 1) + indexOrder;
+        int indexN = sector*(ALERT.getNumLayer()*(ALERT.getNumComp()+1)) 
+                + layer*(ALERT.getNumComp() + 1) + indexOrder;
         return indexN;
     }
 
     public int IndextoOrder(int index){
         int order = -1;
-        int indexOrder = index%(numComp +1);
+        int indexOrder = index%(ALERT.getNumComp() +1);
         if(indexOrder == 11){
             order = 1;
         }else{
@@ -73,7 +72,7 @@ public class ALERTCalibrationEngine extends CalibrationEngine {
     }
     public int IndextoComponent(int index){
         int component = -1;
-        int indexOrder = index%(numComp + 1);
+        int indexOrder = index%(ALERT.getNumComp() + 1);
         if(indexOrder == 11){
             component = 10;
         }else{
@@ -82,13 +81,13 @@ public class ALERTCalibrationEngine extends CalibrationEngine {
         return component;
     }
     public int IndextoLayer(int index){
-        int layer = index%numLayer;
+        int layer = index%ALERT.getNumLayer();
         return layer;
     }
     public int IndextoSector(int index){
-        int sector = index%numSector;
+        int sector = index%ALERT.getNumSector();
         if(sector > 0){
-            sector = numSector - sector;
+            sector = ALERT.getNumSector() - sector;
         }
         return sector;
     }

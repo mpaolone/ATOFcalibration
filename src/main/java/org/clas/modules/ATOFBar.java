@@ -1,10 +1,10 @@
 package org.clas.modules;
-
+import org.clas.modules.geom.ALERTGeomAlign;
 public class ATOFBar {
+    ALERTGeomAlign ALERT;
     public int component = 0;
     public int sector = 0;
     public int layer = 0;
-    private double lbar = 279.7; //40cm paddles
 
     public double time_front = 0; //front is upstream (name needs to be changed and refactored)
     public double time_back = 0; //back is downstream
@@ -41,7 +41,7 @@ public class ATOFBar {
 
     public double getRedTavg(double veff){
         if(veff == 0) veff = 200; //default;
-        return (time_back + time_front - lbar/veff)/2.0;
+        return (time_back + time_front - ALERT.getAtof_bar_length()/veff)/2.0;
     }
 
     public double getTdiff(){
@@ -55,11 +55,11 @@ public class ATOFBar {
     //only use veff offset
     public double getRedTdiff(double veff){
         if(veff == 0) veff = 200; //default;
-        double l_front = lbar/2.0 - zhit;
-        double l_back = lbar/2.0 + zhit;
-        if(l_front > lbar) l_front = lbar;
+        double l_front = ALERT.getAtof_bar_length()/2.0 - zhit;
+        double l_back = ALERT.getAtof_bar_length()/2.0 + zhit;
+        if(l_front > ALERT.getAtof_bar_length()) l_front = ALERT.getAtof_bar_length();
         if(l_front < 0) l_front = 0;
-        if(l_back > lbar) l_back = lbar;
+        if(l_back > ALERT.getAtof_bar_length()) l_back = ALERT.getAtof_bar_length();
         if(l_back < 0) l_back = 0;
 
         double tdiff = time_front - l_front/veff - (time_back - l_back/veff);
@@ -71,11 +71,11 @@ public class ATOFBar {
 
 
         if(veff == 0) veff = 200; //default;
-        double l_front = lbar/2.0 - zhit;
-        double l_back = lbar/2.0 + zhit;
-        if(l_front > lbar) l_front = lbar;
+        double l_front = ALERT.getAtof_bar_length()/2.0 - zhit;
+        double l_back = ALERT.getAtof_bar_length()/2.0 + zhit;
+        if(l_front > ALERT.getAtof_bar_length()) l_front = ALERT.getAtof_bar_length();
         if(l_front < 0) l_front = 0;
-        if(l_back > lbar) l_back = lbar;
+        if(l_back > ALERT.getAtof_bar_length()) l_back = ALERT.getAtof_bar_length();
         if(l_back < 0) l_back = 0;
 
         double tdiff = time_front - l_front/veff - twu - (time_back - l_back/veff - twd);
@@ -98,10 +98,10 @@ public class ATOFBar {
         return Math.log(ToT_front/ToT_back);
     }
     public double getZeroTimeU(double vtime, double veff, double T0u, double twu){
-        return time_front - propTime - vtime - T0u - twu - veff/(lbar/2.0 - zhit);
+        return time_front - propTime - vtime - T0u - twu - veff/(ALERT.getAtof_bar_length()/2.0 - zhit);
     }
     public double getZeroTimeD(double vtime, double veff, double T0d, double twd){
-        return time_back - propTime - vtime - T0d - twd - veff/(lbar/2.0 + zhit);
+        return time_back - propTime - vtime - T0d - twd - veff/(ALERT.getAtof_bar_length()/2.0 + zhit);
     }
 
 }
