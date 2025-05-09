@@ -3,7 +3,7 @@ package org.clas.modules;
 
 // this
 
-public class ALERTDetector {
+public class ALERTChannel {
     public double Test_ADC = 0.0;
     public double ToT_Front = 0.0;
     public double ToT_Back = 0.0;

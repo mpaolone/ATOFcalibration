@@ -13,11 +13,13 @@ import org.jlab.io.base.DataEvent;
 import org.jlab.io.base.DataEventType;
 import org.jlab.io.task.IDataEventListener;
 import org.jlab.utils.groups.IndexedList;
+import org.clas.modules.geom.ALERTGeomAlign;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ALERTDataStructs implements IDataEventListener{
+    ALERTGeomAlign ALERT;
     public DataGroup SCDG;
     public static IndexedList<DataGroup> dataGroups = new IndexedList<DataGroup>(3);
     //public static H1F Pedestal[][][] = new H1F [16][3][5];
@@ -47,16 +49,12 @@ public class ALERTDataStructs implements IDataEventListener{
     private double attlen_default = 1.0;
     private double t0_default = 0.0;
 
-    private static int numSector = 15;
-    private static int numLayer = 4;
-    private static int numComp = 11;
-    private static int numOrder = 2;
-
     private double ToTthresh = 1000; //threshold for ToT
 
     public int PMTtoIndex(int sector, int layer, int component, int order){
         int indexOrder = component + order;
-        int indexN = sector*(numLayer*(numComp+1)) + layer*(numComp + 1) + indexOrder;
+        int indexN = sector*(ALERT.getNumLayer()*(ALERT.getNumComp()+1))
+                + layer*(ALERT.getNumComp() + 1) + indexOrder;
         return indexN;
     }
 
