@@ -49,11 +49,6 @@ public class ALERTDataStructs implements IDataEventListener{
     private double attlen_default = 1.0;
     private double t0_default = 0.0;
 
-    private static int numSector = 15;
-    private static int numLayer = 4;
-    private static int numComp = 11;
-    private static int numOrder = 2;
-
     private double ToTthresh = 1000; //threshold for ToT
 
     public int PMTtoIndex(int sector, int layer, int component, int order){
