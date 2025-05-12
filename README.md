@@ -3,8 +3,8 @@ Calibration software for ALERT ATOF
 
 usage:
 
+1) Run from the out/artifacts/ATOFcalibration_jar/ATOFcalibration.jar
 
-Run from the out/artifacts/ATOFcalibration_jar/ATOFcalibration.jar
 $ java -jar ATOFcalibration.jar
 
 
@@ -17,12 +17,16 @@ After processing events, click on an entry in the table to display relevant hist
 
 
 Source code under src/main/java/org/clas/modules/
+
 for example, scint/ has the plotting and fitting codes for calibration
 
 after  modification, run either:
+
 $ mvn compile 
+
 $ jar uf ./out/artifacts/ATOFcalibration_jar/ATOFcalibration.jar -C target/classes org/clas/modules/scint/ALERTT0Calibration.class
 and other files you recompiled
+
 
 or in your code luncher, find and run file   /target/classes/org/clas/modules/AppLauncher.class
 
