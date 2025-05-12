@@ -14,6 +14,8 @@ import org.jlab.io.base.DataEventType;
 import org.jlab.io.task.IDataEventListener;
 import org.jlab.utils.groups.IndexedList;
 import org.clas.modules.geom.ALERTGeomAlign;
+import org.jlab.clas.physics.LorentzVector;
+
 
 import java.util.ArrayList;
 import java.util.List;
