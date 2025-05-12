@@ -38,9 +38,13 @@ public class ALERTT0Calibration {
 
         H1F meanDist[][] = new H1F[15][4];
         H1F wbDist[][][] = new H1F[15][4][12];
+        
         //F1D fbFunc = new F1D("fbFunc","[amp]*gaus(x,[mean],[sigma])", -10.0, 10.0);
-        F1D fbFunc = new F1D("fbFunc","[amp]/(pow(x - [mean],2) + pow([sigma],2))*[sigma]/3.14159/2.0 + [amp]*gaus(x,[mean],[sigma])/2.0", -10.0, 10.0);
-        F1D wbFunc = new F1D("wbFunc","[amp]/(pow(x - [mean],2) + pow([sigma],2))*[sigma]/3.14159/2.0 + [amp]*gaus(x,[mean],[sigma])/2.0", -10.0, 10.0);
+        //F1D fbFunc = new F1D("fbFunc","[amp]/(pow(x - [mean],2) + pow([sigma],2))*[sigma]/3.14159/2.0 + [amp]*gaus(x,[mean],[sigma])/2.0", -10, 10);
+        //F1D wbFunc = new F1D("wbFunc","[amp]/(pow(x - [mean],2) + pow([sigma],2))*[sigma]/3.14159/2.0 + [amp]*gaus(x,[mean],[sigma])/2.0", -10, 10);
+ // move the fitting function to local so it yield a better fitting
+ 
+ 
         for (int sector = 0; sector < 15; sector++) {
             for (int slayer = 0; slayer < 4; slayer++) {
                 double mean = -1.0;
@@ -51,18 +55,24 @@ public class ALERTT0Calibration {
                 //double min_test = meanDist[sector][slayer].getMin();
 
                 // minPos needs to be better defined. minBin doesn't exist
-                //double minPos = maxPos - (2*maxPos);
-                //fbFunc.setRange(minPos,maxPos);
-
+                double meanbin = meanDist[sector][slayer].getDataX(maxBin);
+                double x_range = 4.;
+                F1D fbFunc = new F1D("fbFunc","[amp]*gaus(x,[mean],[sigma])/2.0 + [const]", -10.0, 10.0);
+                fbFunc.setRange(meanbin-x_range,meanbin+x_range);
                 fbFunc.setParameter(0, meanDist[sector][slayer].getBinContent(maxBin));
                 //fbFunc.setParLimits(0, meanDist[sector][slayer].getBinContent(maxBin)*0.7, meanDist[sector][slayer].getBinContent(maxBin)*1.2);
-                fbFunc.setParameter(1, 0.0);
-                fbFunc.setParameter(2, 1.0);
-
+                fbFunc.setParameter(1, meanbin);
+                fbFunc.setParameter(2, 3.0);
+                fbFunc.setParameter(3, 0.1*meanDist[sector][slayer].getBinContent(maxBin));
+		fbFunc.setLineColor(2);
+                fbFunc.setLineWidth(2);
                 //H1F hp = pdat.getItem(0,0,1).getH1F("Pedestal");
                 //H1F hp = (H1F) pdat.getH1F("Pedestal");
                 //F1D fp = new F1D("gmFunc", "[amp]*landau(x,[mean],[sigma]) +[exp_amp]*exp([p]*x)",0.0, hvmax);
                 DataFitter.fit(fbFunc, meanDist[sector][slayer], "HQ");
+                double chi2ndf = fbFunc.getChiSquare() / fbFunc.getNDF();
+                String Hist_Name = String.format("FrontBack_%d_%d, Chi2/NDF = %.2f", sector,slayer,chi2ndf);
+                meanDist[sector][slayer].setTitle(Hist_Name);
                 mean = fbFunc.getParameter(1);
                 //System.out.println("upstream_downstream mean: " + mean);
 
@@ -78,10 +88,20 @@ public class ALERTT0Calibration {
                         ALERTCalibrationEngine.calib.setDoubleValue(0.0, "wedge_bar", sector, slayer, 11);
                     }else{
                         wbDist[sector][slayer][comp] = ds.getItem(sector, slayer, comp).getH1F("wbAlignment");
+                        double meanbin2 = wbDist[sector][slayer][comp].getDataX(wbDist[sector][slayer][comp].getMaximumBin());
+                        F1D wbFunc = new F1D("wbFunc","[amp]*gaus(x,[mean],[sigma])/2.0 + [const]", -10.0, 10.0);
+                        wbFunc.setRange(meanbin2-x_range,meanbin2+x_range);
                         wbFunc.setParameter(0, wbDist[sector][slayer][comp].getBinContent(wbDist[sector][slayer][comp].getMaximumBin()));
-                        wbFunc.setParameter(1, 0.0);
-                        wbFunc.setParameter(2, 0.1);
+                        wbFunc.setParameter(1, meanbin2);
+                        wbFunc.setParameter(2, 3.);
+                        wbFunc.setParameter(3, 0.1*wbDist[sector][slayer][comp].getBinContent(wbDist[sector][slayer][comp].getMaximumBin()));
+			wbFunc.setLineColor(2);
+                        wbFunc.setLineWidth(2);
                         DataFitter.fit(wbFunc, wbDist[sector][slayer][comp], "HQ");
+                        
+                        double chi2ndf2 = wbFunc.getChiSquare() / fbFunc.getNDF();
+                        String Hist_Name2 = String.format("WedgeBar_%d_%d_%d, Chi2/NDF = %.2f", sector,slayer,comp,chi2ndf2);
+                        wbDist[sector][slayer][comp].setTitle(Hist_Name2);
 
                         ALERTCalibrationEngine.calib.setDoubleValue(wbFunc.getParameter(1), "wedge_bar", sector, slayer, comp);
                     }
