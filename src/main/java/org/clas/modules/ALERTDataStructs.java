@@ -225,6 +225,8 @@ public void setTracks(DataEvent event, ArrayList<ATOFBar> barList) {
 
     for (int i = 0; i < partBank.rows(); i++) {
         if (partBank.getInt("pid", i) == 11) {
+            vz = partBank.getFloat("vz", i);
+            if (vz < -25 || vz > 10) continue;
             double px = partBank.getFloat("px", i) / 1000.0;
             double py = partBank.getFloat("py", i) / 1000.0;
             double pz = partBank.getFloat("pz", i) / 1000.0;

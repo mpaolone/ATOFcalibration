@@ -71,6 +71,9 @@ public class ALERTT0CalibrationElastic {
 
         for (int i = 0; i < bR.getRows(); i++) {
             if (bR.getInt("pid", i) == 11) {
+           double vz_candidate = bR.getFloat("vz", i);
+          if (vz_candidate < -25 || vz_candidate > 10) continue;
+
                 double ex = bR.getFloat("px", i) / 1000.0;
                 double ey = bR.getFloat("py", i) / 1000.0;
                 double ez = bR.getFloat("pz", i) / 1000.0;
