@@ -98,19 +98,16 @@ public class ALERTDataStructs implements IDataEventListener{
     public ArrayList<ATOFHit> getATOFHits(DataEvent event){
         //System.out.println("in event");
         ArrayList<ATOFHit> hitList = new ArrayList<ATOFHit>();
-        DataBank adcBank = event.getBank("ATOF::tdc");
+        DataBank tdcBank = event.getBank("ATOF::tdc");
+        tdcBank.show();
         if (event.hasBank("ATOF::tdc")) {
-            for (int i = 0; i < adcBank.rows(); i++) {
-                int sector1 = adcBank.getInt("sector", i);
-                int layer1 = adcBank.getInt("layer", i);
-                int order1 = adcBank.getInt("order", i);
-                int component1 = adcBank.getInt("component", i);
-                double time1 = adcBank.getInt("TDC", i);
-                double ToT1 = adcBank.getInt("ToT", i);
-                //double time1 = adcBank.getFloat("time", i);
-                //double ToT1 = adcBank.getInt("ADC", i);
-
-                //System.out.println(time1 + "  " + ToT1);
+            for (int i = 0; i < tdcBank.rows(); i++) {
+                int sector1 = tdcBank.getInt("sector", i);
+                int layer1 = tdcBank.getInt("layer", i);
+                int order1 = tdcBank.getInt("order", i);
+                int component1 = tdcBank.getInt("component", i);
+                double time1 = tdcBank.getInt("TDC", i);
+                double ToT1 = tdcBank.getInt("ToT", i);
 
                 ATOFHit hit = new ATOFHit(sector1, layer1, component1, order1, time1, ToT1);
                 hitList.add(hit);
@@ -129,8 +126,9 @@ public class ALERTDataStructs implements IDataEventListener{
         }
         for(ATOFBar bar : barList){
             for(ATOFHit wedge : wedgeList){
+                
                 if((wedge.sector == bar.sector) && (wedge.layer == bar.layer)){
-                    ATOFBarWedgeClust bwc = new ATOFBarWedgeClust(bar, wedge.sector, wedge.layer, wedge.component, wedge.time, wedge.ToT);
+                    ATOFBarWedgeClust bwc = new ATOFBarWedgeClust(bar, wedge.sector, wedge.layer, wedge.component, wedge.time, wedge.ToT, wedge.getZ());
                     clustList.add(bwc);
                 }
             }
@@ -164,15 +162,11 @@ public class ALERTDataStructs implements IDataEventListener{
     public void setTracks(DataEvent event, ArrayList<ATOFBar> barList){
         DataBank projBank = event.getBank("ALERT::Projections");
         DataBank trackBank = event.getBank("AHDC::Track");
-        //if (event.hasBank("ALERT::Projections")) System.out.println("has proj banks");
         if (event.hasBank("ALERT::Projections") && event.hasBank("AHDC::Track")) {
-            //System.out.println("num of rows in projBank: " + projBank.rows());
-            //System.out.println("num of rows in trackBank: " + trackBank.rows());
             for (int i = 0; i < projBank.rows(); i++) {
                 double x = projBank.getFloat("x_at_bar",i);
                 //int id = projBank.getInt("trackID",i);
                 int id = 0;
-                //System.out.println("x: " + x);
                 double y = projBank.getFloat("y_at_bar",i);
                 double z = projBank.getFloat("z_at_bar",i);
                 double L = projBank.getFloat("L_at_bar",i);
@@ -191,17 +185,21 @@ public class ALERTDataStructs implements IDataEventListener{
                 int PhiBlock = XYtoPhiBlock(x,y);
                 for (ATOFBar bar : barList) {
                     if(Math.abs(PhiBlock - bar.PhiBlock) == 0){
+                        System.out.print("First case \n");
                         bar.setTrackZhit(z);
                         bar.setTrackId(id);
                         bar.setPropTime(ptime);
+                        bar.hasTrackHit = true;
                     }else if(Math.abs(PhiBlock - bar.PhiBlock) <= 1){
+                        System.out.print("Second case \n");
                         bar.setTrackZhit(z);
                         bar.setTrackId(id);
                         bar.setPropTime(ptime);
+                        bar.hasTrackHit = true;
                     }
+                    else System.out.print("No case \n");
                 }
             }
-
         }
     }
 
@@ -227,9 +225,7 @@ public class ALERTDataStructs implements IDataEventListener{
         ArrayList<ATOFBar> barList = new ArrayList<ATOFBar>();
         ArrayList<ATOFHit> hitList_0 = new ArrayList<ATOFHit>();
         ArrayList<ATOFHit> hitList_1 = new ArrayList<ATOFHit>();
-        //System.out.println("in getBars list");
         for (ATOFHit hit : hitList) {
-            if(hit.order == 1) System.out.println(hit.component);
             if (hit.component == 10 && hit.order == 0) {
                 hitList_1.add(hit);
             }
@@ -239,12 +235,13 @@ public class ALERTDataStructs implements IDataEventListener{
         }
         for(ATOFHit hit0 : hitList_0) {
             for (ATOFHit hit1 : hitList_1) {
-                if (hit0.component == hit1.component) {
+                if (hit0.sector == hit1.sector && hit0.layer == hit1.layer) {
                     ATOFBar bar = new ATOFBar(hit0.sector, hit0.layer, hit0.component, hit0.time, hit1.time, hit0.ToT, hit1.ToT);
                     barList.add(bar);
                 }
             }
         }
+        System.out.print("Size of bar list " + barList.size() + "\n");
         return barList;
     }
 /*
@@ -253,7 +250,7 @@ public class ALERTDataStructs implements IDataEventListener{
 
         ArrayList<ATOFBarWedgeClust> barList = new ArrayList<ATOFBarWedgeClust>();
         ArrayList<ALERTDetector> ALERTList = new ArrayList<ALERTDetector>();
-//        DataBank adcBank = event.getBank("ATOF::adc");
+//        DataBank tdcBank = event.getBank("ATOF::adc");
         DataBank tdcBank = event.getBank("ATOF::tdc");
         // NOTE:  This is an MC bank with position information.  This must be changed
         //  to the appropriate hit reconstruction bank
@@ -272,26 +269,43 @@ public class ALERTDataStructs implements IDataEventListener{
         DataSummary.setPOS(trackBank.getDouble("xpos",0),
                 trackBank.getDouble("ypos",0),
                 trackBank.getDouble("zpos",0));
-        DataSummary.set_ADC(adcBank.getDouble("adc_front",0),
-                adcBank.getDouble("adc_back",0));
-        DataSummary.Test_Energy = adcBank.getDouble("energy_front",0);
+        DataSummary.set_ADC(tdcBank.getDouble("adc_front",0),
+                tdcBank.getDouble("adc_back",0));
+        DataSummary.Test_Energy = tdcBank.getDouble("energy_front",0);
         DataSummary.YAmp = ALERTDataTransformer(DataSummary).YAmp;
         ALERTList.add(DataSummary);
         return ALERTList;
     }
     */
+    
+    public double GetBarVeff(ATOFBar bar){
+        double veff = veffConsts.getDoubleValue("veff",bar.sector,bar.layer,bar.component);
+        if(veff == 0){ veff = veff_default;}
+        double twu = twEval(bar.ToT_up,
+                        twConsts.getDoubleValue("tw0",bar.sector,bar.layer,bar.component,0),
+                        twConsts.getDoubleValue("tw1",bar.sector,bar.layer,bar.component,0),
+                        twConsts.getDoubleValue("tw2",bar.sector,bar.layer,bar.component,0));
+
+        double twd = twEval(bar.ToT_down,
+                        twConsts.getDoubleValue("tw0",bar.sector,bar.layer,bar.component,1),
+                        twConsts.getDoubleValue("tw1",bar.sector,bar.layer,bar.component,1),
+                        twConsts.getDoubleValue("tw2",bar.sector,bar.layer,bar.component,1));
+        return bar.getRedTdiff(twu,twd);
+    }
 
     public void FillData(DataEvent event, String name) {
-
+        System.out.print("An event------------\n");
         //first get list of bars and clusters:
-
         ArrayList<ATOFHit> hits = getATOFHits(event);
         ArrayList<ATOFBar> bars = getBars(hits);
+        
+        //System.out.print("Wedges " + hits.size() + "\n");
+        //System.out.print("Bars " + bars.size() + "\n");
         setTracks(event,bars);
         //setTracksMC(event,bars);
         double vtime = getFDvtime(event);
         ArrayList<ATOFBarWedgeClust> clusts = getClusts(hits, bars);
-
+        if(clusts.size()>0) System.out.print("Clusters " + clusts.size() + "\n"); 
 
         int sector = 0;
         int component = 0;
@@ -362,34 +376,30 @@ public class ALERTDataStructs implements IDataEventListener{
                 sector = bar.sector;
                 layer = bar.layer;
                 component = bar.component;
-                double veff = veffConsts.getDoubleValue("veff",sector,layer,component);
-                if(veff == 0){ veff = veff_default;}
-                double twu = twEval(bar.ToT_front,
-                        twConsts.getDoubleValue("tw0",sector,layer,component,0),
-                        twConsts.getDoubleValue("tw1",sector,layer,component,0),
-                        twConsts.getDoubleValue("tw2",sector,layer,component,0));
-
-                double twd = twEval(bar.ToT_back,
-                        twConsts.getDoubleValue("tw0",sector,layer,component,1),
-                        twConsts.getDoubleValue("tw1",sector,layer,component,1),
-                        twConsts.getDoubleValue("tw2",sector,layer,component,1));
-                double veff_new = bar.getRedTdiff(twu,twd);
-                //Veff[sector][layer][component].fill(bar.zhit, bar.getRedTdiff(veff,twu,twd));
+                double veff_new = GetBarVeff(bar);
                 if(bar.zhit != 0.0) {
-                    Veff[sector][layer][component].fill(bar.zhit + 150.0, veff_new);
+                    System.out.print("Hist rempli \n");
+                    Veff[sector][layer][component].fill(bar.zhit, veff_new);
                 }
-                //System.out.println(event.getType());
             }
             for (ATOFBarWedgeClust clust : clusts) {
+                if(!clust.bar.hasTrackHit){
+                    System.out.print("Using wedge z \n");
+                    //When the bar doesn't have a track to match
+                    //Use the z position from the wedges instead
+                    clust.bar.zhit = clust.wedgeZ;
+                    double veff_new = GetBarVeff(clust.bar);
+                    Veff[sector][layer][component].fill(clust.bar.zhit, veff_new);
+                }
                 sector = clust.sector;
                 layer = clust.layer;
                 component = clust.component;
-                double twu = twEval(clust.bar.ToT_front,
+                double twu = twEval(clust.bar.ToT_up,
                         twConsts.getDoubleValue("tw0",sector,layer,10,0),
                         twConsts.getDoubleValue("tw1",sector,layer,10,0),
                         twConsts.getDoubleValue("tw2",sector,layer,10,0));
 
-                double twd = twEval(clust.bar.ToT_back,
+                double twd = twEval(clust.bar.ToT_down,
                         twConsts.getDoubleValue("tw0",sector,layer,10,1),
                         twConsts.getDoubleValue("tw1",sector,layer,10,1),
                         twConsts.getDoubleValue("tw2",sector,layer,10,1));
@@ -431,12 +441,12 @@ public class ALERTDataStructs implements IDataEventListener{
             for (ATOFBar bar : bars){
                 layer = bar.layer;
                 sector = bar.sector;
-                double twu = twEval(bar.ToT_front,
+                double twu = twEval(bar.ToT_up,
                         twConsts.getDoubleValue("tw0",sector,layer,10,0),
                         twConsts.getDoubleValue("tw1",sector,layer,10,0),
                         twConsts.getDoubleValue("tw2",sector,layer,10,0));
 
-                double twd = twEval(bar.ToT_back,
+                double twd = twEval(bar.ToT_down,
                         twConsts.getDoubleValue("tw0",sector,layer,10,1),
                         twConsts.getDoubleValue("tw1",sector,layer,10,1),
                         twConsts.getDoubleValue("tw2",sector,layer,10,1));
@@ -459,18 +469,8 @@ public class ALERTDataStructs implements IDataEventListener{
         }
 
         else if( name.equals("T0")){
-            //System.out.println("T0");
-            /*
-            for (ATOFHit hit : hits) {
-                sector = hit.sector;
-                component = hit.component;
-                layer = hit.layer;
-                order = hit.order;
-                T0.fill(PMTtoIndex(sector, layer, component, order), hit.time);
-            }
-            */
-
             for (ATOFBar bar : bars) {
+<<<<<<< Updated upstream
                 T0.fill(PMTtoIndex(bar.sector, bar.layer, 10, 0), bar.time_front - bar.propTime);
                 T0.fill(PMTtoIndex(bar.sector, bar.layer, 10, 1), bar.time_back - bar.propTime);
                 fbAlign[bar.sector][bar.layer].fill(bar.getTdiff());
@@ -479,6 +479,28 @@ public class ALERTDataStructs implements IDataEventListener{
             for(ATOFBarWedgeClust clust : clusts){
                 T0.fill(PMTtoIndex(clust.sector,clust.layer,clust.component, 0), clust.wedgeTime - clust.bar.propTime);
                 wbAlign[clust.sector][clust.layer][clust.component].fill(clust.getTdiff(veff_default,0.0));
+=======
+                System.out.println("in bars");
+                if(bar.ToT_up > ToTthresh && bar.ToT_down > ToTthresh) {
+                    System.out.println("passed cutsT");
+                    T0.fill(PMTtoIndex(bar.sector, bar.layer, 10, 0), bar.time_up - bar.propTime);
+                    T0.fill(PMTtoIndex(bar.sector, bar.layer, 10, 1), bar.time_down - bar.propTime);
+                    fbAlign[bar.sector][bar.layer].fill(bar.getTdiff());
+                }
+            }
+
+            for(ATOFBarWedgeClust clust : clusts){
+                double ToTmax = 0;
+                double timeMax = 0;
+                double tdiffMax = 0;
+                if(clust.wedgeToT > ToTmax) {
+                    timeMax = clust.wedgeTime;
+                    ToTmax = clust.wedgeToT;
+                    tdiffMax = clust.getTdiff(veff_default, 0.0);
+                }
+                T0.fill(PMTtoIndex(clust.sector, clust.layer, clust.component, 0), timeMax - clust.bar.propTime);
+                wbAlign[clust.sector][clust.layer][clust.component].fill(tdiffMax);
+>>>>>>> Stashed changes
             }
 
 
@@ -508,8 +530,8 @@ public class ALERTDataStructs implements IDataEventListener{
                 layer = bar.layer;
                 //TW[sector][super_layer][layer].fill(dr.ADC_Front,dr.timeFront);
                 //no T0 offset and default veff is used.
-                TW[sector][layer][component].fill(bar.ToT_front, bar.getZeroTimeU(vtime,veff_default,0,0));
-                TW[sector][layer][component + 1].fill(bar.ToT_back, bar.getZeroTimeD(vtime,veff_default,0,0));
+                TW[sector][layer][component].fill(bar.ToT_up, bar.getZeroTimeU(vtime,veff_default,0,0));
+                TW[sector][layer][component + 1].fill(bar.ToT_down, bar.getZeroTimeD(vtime,veff_default,0,0));
             }
             for (ATOFBarWedgeClust clust : clusts){
                 component = clust.component;
@@ -543,21 +565,7 @@ public class ALERTDataStructs implements IDataEventListener{
 
             //return SCDG;
         }
-    /*
-    public static ALERTDetector ALERTDataTransformer(ALERTDetector DataSum){
-        // apply method in ALERTDetector to get the final form of the data (apply corrections)
-        double test_Veff = 0.0;
-
-        ALERTDetector Transformer = new ALERTDetector();
-        Transformer.YAmp= Transformer.VeffTestMethod(DataSum.XPOS,DataSum.YPOS,DataSum.Test_ADC);
-        //Transformer.VeffTestMethod(ls.XPOS, ls.YPOS));
-        return Transformer;
-    }
-    */
-
-
-
-
+        
     public void Create_Fill_Histo2D(String Module){
         if (Module.equals("Pedestal")) {
             System.out.println("Initialize Pedestal Histograms");
@@ -635,7 +643,4 @@ public class ALERTDataStructs implements IDataEventListener{
             }
         }
     }
-
-
-
 }
