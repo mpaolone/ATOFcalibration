@@ -158,6 +158,7 @@ public class ALERTDataStructs implements IDataEventListener{
             }
         }
     }
+    /*
     public void setTracks(DataEvent event, ArrayList<ATOFBar> barList){
         DataBank projBank = event.getBank("ALERT::Projections");
         DataBank trackBank = event.getBank("AHDC::Track");
@@ -201,6 +202,84 @@ public class ALERTDataStructs implements IDataEventListener{
             }
         }
     }
+*/
+    //begin of elastic
+    
+public void setTracks(DataEvent event, ArrayList<ATOFBar> barList) {
+    if (!event.hasBank("REC::Particle") || !event.hasBank("REC::Event")) return;
+
+    DataBank partBank = event.getBank("REC::Particle");
+    DataBank eventBank = event.getBank("REC::Event");
+
+    double E_beam = 2.2;
+    double mp = 0.938272;
+    double c = 29.9792458;
+    double barrelRadius_cm = 78.5;
+
+    double vz = 0;
+    LorentzVector beam = new LorentzVector(0, 0, E_beam, E_beam);
+    LorentzVector electron = new LorentzVector();
+    boolean foundElectron = false;
+
+    for (int i = 0; i < partBank.rows(); i++) {
+        if (partBank.getInt("pid", i) == 11) {
+            double px = partBank.getFloat("px", i) / 1000.0;
+            double py = partBank.getFloat("py", i) / 1000.0;
+            double pz = partBank.getFloat("pz", i) / 1000.0;
+            double E = Math.sqrt(px * px + py * py + pz * pz);
+            vz = partBank.getFloat("vz", i);
+            electron.setPxPyPzE(px, py, pz, E);
+            foundElectron = true;
+            break;
+        }
+    }
+
+    if (!foundElectron) return;
+
+    LorentzVector q = new LorentzVector();
+    q.copy(beam);
+    q.sub(electron);
+
+    double p = q.p();
+    double E = Math.sqrt(p * p + mp * mp);
+    double beta = p / E;
+    double v = beta * c;
+
+    double ux = q.px() / p;
+    double uy = q.py() / p;
+    double uz = q.pz() / p;
+
+    double pathLength_cm = barrelRadius_cm / Math.sqrt(ux * ux + uy * uy);
+    double dz = pathLength_cm * uz;
+    double z_at_bar = vz + dz;
+
+    double ptime = pathLength_cm / v;
+
+    double phi = Math.atan2(q.py(), q.px());
+    if (phi < 0) phi += 2 * Math.PI;
+    int phiBlock = XYtoPhiBlock(Math.cos(phi), Math.sin(phi));
+
+    for (ATOFBar bar : barList) {
+        if (Math.abs(phiBlock - bar.PhiBlock) == 0 || Math.abs(phiBlock - bar.PhiBlock) == 1) {
+            bar.setTrackZhit(z_at_bar);
+            bar.setTrackId(0);
+            bar.setPropTime(ptime);
+            bar.hasTrackHit = true;
+        }
+    }
+}
+
+    //end of elastic 
+
+
+    
+
+
+
+
+
+
+
 
     public float getFDvtime(DataEvent event){
         DataBank recBank = event.getBank("REC::Particle");
