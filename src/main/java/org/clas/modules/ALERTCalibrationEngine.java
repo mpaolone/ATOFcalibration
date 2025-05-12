@@ -55,14 +55,14 @@ public class ALERTCalibrationEngine extends CalibrationEngine {
 // appropriate sector,layer,component, and order
     public int PMTtoIndex(int sector, int layer, int component, int order){
         int indexOrder = component + order;
-        int indexN = sector*(ALERT.getNumLayer()*(ALERT.getNumComp()+1)) 
-                + layer*(ALERT.getNumComp() + 1) + indexOrder;
+        int indexN = sector*(ALERT.getNumLayer()*(ALERT.getNumComponent()+1)) 
+                + layer*(ALERT.getNumComponent() + 1) + indexOrder;
         return indexN;
     }
 
     public int IndextoOrder(int index){
         int order = -1;
-        int indexOrder = index%(ALERT.getNumComp() +1);
+        int indexOrder = index%(ALERT.getNumComponent() +1);
         if(indexOrder == 11){
             order = 1;
         }else{
@@ -72,7 +72,7 @@ public class ALERTCalibrationEngine extends CalibrationEngine {
     }
     public int IndextoComponent(int index){
         int component = -1;
-        int indexOrder = index%(ALERT.getNumComp() + 1);
+        int indexOrder = index%(ALERT.getNumComponent() + 1);
         if(indexOrder == 11){
             component = 10;
         }else{

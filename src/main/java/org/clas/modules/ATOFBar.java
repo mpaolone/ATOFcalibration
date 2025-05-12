@@ -70,7 +70,7 @@ public class ATOFBar {
 
     public double getRedTavg(double veff){
         if(veff == 0) veff = 200; //default, this should NOT be hardcoded
-        return (time_down + time_up - ALERT.getAtof_bar_length()/veff)/2.0;
+        return (time_down + time_up - ALERT.getAtofBarLength()/veff)/2.0;
     }
 
     public double getTdiff(){return (time_down - time_up);}
@@ -79,11 +79,11 @@ public class ATOFBar {
     //only use veff offset
     public double getRedTdiff(double veff){
         if(veff == 0) veff = 200; //default, this should NOT be hardcoded
-        double l_front = ALERT.getAtof_bar_length()/2.0 - zhit;
-        double l_back = ALERT.getAtof_bar_length()/2.0 + zhit;
-        if(l_front > ALERT.getAtof_bar_length()) l_front = ALERT.getAtof_bar_length();
+        double l_front = ALERT.getAtofBarLength()/2.0 - zhit;
+        double l_back = ALERT.getAtofBarLength()/2.0 + zhit;
+        if(l_front > ALERT.getAtofBarLength()) l_front = ALERT.getAtofBarLength();
         if(l_front < 0) l_front = 0;
-        if(l_back > ALERT.getAtof_bar_length()) l_back = ALERT.getAtof_bar_length();
+        if(l_back > ALERT.getAtofBarLength()) l_back = ALERT.getAtofBarLength();
         if(l_back < 0) l_back = 0;
         double tdiff = time_up - l_front/veff - (time_down - l_back/veff);
         return (tdiff);
@@ -92,11 +92,11 @@ public class ATOFBar {
     //use all offsets
     public double getRedTdiff(double veff, double twu, double twd){
         if(veff == 0) veff = 200; //default, this should NOT be hardcoded
-        double l_front = ALERT.getAtof_bar_length()/2.0 - zhit;
-        double l_back = ALERT.getAtof_bar_length()/2.0 + zhit;
-        if(l_front > ALERT.getAtof_bar_length()) l_front = ALERT.getAtof_bar_length();
+        double l_front = ALERT.getAtofBarLength()/2.0 - zhit;
+        double l_back = ALERT.getAtofBarLength()/2.0 + zhit;
+        if(l_front > ALERT.getAtofBarLength()) l_front = ALERT.getAtofBarLength();
         if(l_front < 0) l_front = 0;
-        if(l_back > ALERT.getAtof_bar_length()) l_back = ALERT.getAtof_bar_length();
+        if(l_back > ALERT.getAtofBarLength()) l_back = ALERT.getAtofBarLength();
         if(l_back < 0) l_back = 0;
         double tdiff = time_up - l_front/veff - twu - (time_down - l_back/veff - twd);
         return (tdiff);
@@ -115,9 +115,9 @@ public class ATOFBar {
         return Math.log(ToT_up/ToT_down);
     }
     public double getZeroTimeU(double vtime, double veff, double T0u, double twu){
-        return time_up - propTime - vtime - T0u - twu - veff/(ALERT.getAtof_bar_length()/2.0 - zhit);
+        return time_up - propTime - vtime - T0u - twu - veff/(ALERT.getAtofBarLength()/2.0 - zhit);
     }
     public double getZeroTimeD(double vtime, double veff, double T0d, double twd){
-        return time_down - propTime - vtime - T0d - twd - veff/(ALERT.getAtof_bar_length()/2.0 + zhit);
+        return time_down - propTime - vtime - T0d - twd - veff/(ALERT.getAtofBarLength()/2.0 + zhit);
     }
 }

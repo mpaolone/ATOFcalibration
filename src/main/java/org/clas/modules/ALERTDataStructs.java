@@ -53,8 +53,8 @@ public class ALERTDataStructs implements IDataEventListener{
 
     public int PMTtoIndex(int sector, int layer, int component, int order){
         int indexOrder = component + order;
-        int indexN = sector*(ALERT.getNumLayer()*(ALERT.getNumComp()+1))
-                + layer*(ALERT.getNumComp() + 1) + indexOrder;
+        int indexN = sector*(ALERT.getNumLayer()*(ALERT.getNumComponent()+1))
+                + layer*(ALERT.getNumComponent() + 1) + indexOrder;
         return indexN;
     }
 
@@ -99,7 +99,7 @@ public class ALERTDataStructs implements IDataEventListener{
         //System.out.println("in event");
         ArrayList<ATOFHit> hitList = new ArrayList<ATOFHit>();
         DataBank tdcBank = event.getBank("ATOF::tdc");
-        tdcBank.show();
+        //tdcBank.show();
         if (event.hasBank("ATOF::tdc")) {
             for (int i = 0; i < tdcBank.rows(); i++) {
                 int sector1 = tdcBank.getInt("sector", i);
@@ -240,7 +240,7 @@ public class ALERTDataStructs implements IDataEventListener{
                 }
             }
         }
-        System.out.print("Size of bar list " + barList.size() + "\n");
+        //System.out.print("Size of bar list " + barList.size() + "\n");
         return barList;
     }
 /*
@@ -293,7 +293,7 @@ public class ALERTDataStructs implements IDataEventListener{
     }
 
     public void FillData(DataEvent event, String name) {
-        System.out.print("An event------------\n");
+        //System.out.print("An event------------\n");
         //first get list of bars and clusters:
         ArrayList<ATOFHit> hits = getATOFHits(event);
         ArrayList<ATOFBar> bars = getBars(hits);
@@ -304,7 +304,7 @@ public class ALERTDataStructs implements IDataEventListener{
         //setTracksMC(event,bars);
         double vtime = getFDvtime(event);
         ArrayList<ATOFBarWedgeClust> clusts = getClusts(hits, bars);
-        if(clusts.size()>0) System.out.print("Clusters " + clusts.size() + "\n"); 
+        //if(clusts.size()>0) System.out.print("Clusters " + clusts.size() + "\n"); 
 
         int sector = 0;
         int component = 0;
@@ -383,7 +383,7 @@ public class ALERTDataStructs implements IDataEventListener{
             }
             for (ATOFBarWedgeClust clust : clusts) {
                 if(!clust.bar.hasTrackHit){
-                    System.out.print("Using wedge z \n");
+                    //System.out.print("Using wedge z \n");
                     //When the bar doesn't have a track to match
                     //Use the z position from the wedges instead
                     clust.bar.zhit = clust.wedgeZ;

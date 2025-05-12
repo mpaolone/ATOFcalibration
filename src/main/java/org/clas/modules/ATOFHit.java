@@ -32,8 +32,8 @@ public class ATOFHit{
     }
     
     public double getZ(){   
-        return this.component * (ALERT.getAtof_wedge_gap() + ALERT.getAtof_wedge_length()) 
-                - ALERT.getAtof_bar_length()+ ALERT.getAtof_wedge_length()/2;
+        return this.component * (ALERT.getAtofWedgeGap() + ALERT.getAtofWedgeLength()) 
+                - ALERT.getAtofBarLength()+ ALERT.getAtofWedgeLength()/2;
     }
 
     public void setZeroTime(double vertexTime, double propTime){
