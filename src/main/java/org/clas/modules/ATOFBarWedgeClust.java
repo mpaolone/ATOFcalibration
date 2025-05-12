@@ -13,14 +13,16 @@ public class ATOFBarWedgeClust {
 
     public double wedgeTime = 0.0;
     public double wedgeToT = 0.0;
-
-    public ATOFBarWedgeClust(ATOFBar bar, int sector, int layer, int component, double wedgeTime, double wedgeToT){
+    public double wedgeZ = 0.0;   
+    
+    public ATOFBarWedgeClust(ATOFBar bar, int sector, int layer, int component, double wedgeTime, double wedgeToT, double wedgeZ){
         this.bar = bar;
         this.sector = sector;
         this.layer = layer;
         this.component = component;
         this.wedgeTime = wedgeTime;
         this.wedgeToT = wedgeToT;
+        this.wedgeZ = wedgeZ;
     }
     public void setBarParams(double veff, double twu, double twd){
         this.barVeff = veff;
