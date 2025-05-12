@@ -39,10 +39,10 @@ public class ALERTT0Calibration {
         H1F meanDist[][] = new H1F[15][4];
         H1F wbDist[][][] = new H1F[15][4][12];
         
-        //F1D fbFunc = new F1D("fbFunc","[amp]*gaus(x,[mean],[sigma])", -10.0, 10.0);
+   // move the fitting function to local so it yield a better fitting
+      //F1D fbFunc = new F1D("fbFunc","[amp]*gaus(x,[mean],[sigma])", -10.0, 10.0);
         //F1D fbFunc = new F1D("fbFunc","[amp]/(pow(x - [mean],2) + pow([sigma],2))*[sigma]/3.14159/2.0 + [amp]*gaus(x,[mean],[sigma])/2.0", -10, 10);
         //F1D wbFunc = new F1D("wbFunc","[amp]/(pow(x - [mean],2) + pow([sigma],2))*[sigma]/3.14159/2.0 + [amp]*gaus(x,[mean],[sigma])/2.0", -10, 10);
- // move the fitting function to local so it yield a better fitting
  
  
         for (int sector = 0; sector < 15; sector++) {
