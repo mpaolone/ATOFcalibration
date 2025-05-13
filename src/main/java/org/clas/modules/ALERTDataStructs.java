@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ALERTDataStructs implements IDataEventListener{
-    ALERTGeomAlign ALERT;
+    ALERTGeomAlign ALERT = new ALERTGeomAlign();
     public DataGroup SCDG;
     public static IndexedList<DataGroup> dataGroups = new IndexedList<DataGroup>(3);
     //public static H1F Pedestal[][][] = new H1F [16][3][5];
