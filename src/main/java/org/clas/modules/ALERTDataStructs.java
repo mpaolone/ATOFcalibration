@@ -160,7 +160,7 @@ public class ALERTDataStructs implements IDataEventListener{
             }
         }
     }
-    /*
+    
     public void setTracks(DataEvent event, ArrayList<ATOFBar> barList){
         DataBank projBank = event.getBank("ALERT::Projections");
         DataBank trackBank = event.getBank("AHDC::Track");
@@ -204,10 +204,10 @@ public class ALERTDataStructs implements IDataEventListener{
             }
         }
     }
-*/
+
     //begin of elastic
     
-public void setTracks(DataEvent event, ArrayList<ATOFBar> barList) {
+public void setTracks_Elastic(DataEvent event, ArrayList<ATOFBar> barList) {
     if (!event.hasBank("REC::Particle") || !event.hasBank("REC::Event")) return;
 
     DataBank partBank = event.getBank("REC::Particle");
