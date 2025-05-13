@@ -13,7 +13,7 @@ import javax.swing.*;
 import java.util.*;
 
 public class ALERTCalibrationEngine extends CalibrationEngine {
-    ALERTGeomAlign ALERT;
+    ALERTGeomAlign ALERT = new ALERTGeomAlign();
     private String moduleName = null;
     private String alertDetector = null;
     private ALERTChannel ALERTChannel = null;
