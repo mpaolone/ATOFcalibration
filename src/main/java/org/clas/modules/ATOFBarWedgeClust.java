@@ -1,7 +1,7 @@
 package org.clas.modules;
 import org.clas.modules.geom.ALERTGeomAlign;
 public class ATOFBarWedgeClust {
-    ALERTGeomAlign ALERT;
+    ALERTGeomAlign ALERT = new ALERTGeomAlign();
     public ATOFBar bar;
     public int component = 0;
     public int sector = 0;
