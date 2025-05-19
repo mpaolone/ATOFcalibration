@@ -107,7 +107,7 @@ public class ALERTCalibrationEngine extends CalibrationEngine {
         if (name.equals("Atten")) {
             calib = new CalibrationConstants(3, "atten/F:datten/F:extra1/F:extra2/F");
         }
-        if (name.equals("T0")) {
+        if (name.equals("T0") || name.equals("T0elas")) {
             calib = new CalibrationConstants(3, "order/I:t0/F:upstream_downstream/F:wedge_bar/F:extra1/F:extra2/F");
         }
 
@@ -149,7 +149,7 @@ public class ALERTCalibrationEngine extends CalibrationEngine {
         else if(name.equals("Atten")){
             Atten_Calib.calcATTLEN(DG);
         }
-        else if(name.equals("T0")){
+        else if(name.equals("T0") || name.equals("T0elas")){
             T0_Calib.calcT0(DG);
         }
     }
@@ -213,7 +213,7 @@ public class ALERTCalibrationEngine extends CalibrationEngine {
                     }
 
 
-                    else if(moduleName.equals("T0")){
+                    else if(moduleName.equals("T0") || moduleName.equals("T0elas")){
                         calib.addEntry(isec, suplayer, ipad);
                         calib.setIntValue(0, "order", isec, suplayer, ipad);
                         calib.setDoubleValue(0.0, "t0", isec, suplayer, ipad);

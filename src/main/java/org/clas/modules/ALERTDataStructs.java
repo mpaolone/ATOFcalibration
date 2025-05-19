@@ -207,71 +207,71 @@ public class ALERTDataStructs implements IDataEventListener{
 
     //begin of elastic
     
-public void setTracks_Elastic(DataEvent event, ArrayList<ATOFBar> barList) {
-    if (!event.hasBank("REC::Particle") || !event.hasBank("REC::Event")) return;
+    public void setTracks_Elastic(DataEvent event, ArrayList<ATOFBar> barList) {
+        if (!event.hasBank("REC::Particle") || !event.hasBank("REC::Event")) return;
 
-    DataBank partBank = event.getBank("REC::Particle");
-    DataBank eventBank = event.getBank("REC::Event");
+        DataBank partBank = event.getBank("REC::Particle");
+        DataBank eventBank = event.getBank("REC::Event");
 
-    double E_beam = 2.2;
-    double mp = 0.938272;
-    double c = 29.9792458;
-    double barrelRadius_cm = 78.5;
+        double E_beam = 2.2;
+        double mp = 0.938272;
+        double c = 29.9792458;
+        double barrelRadius_cm = 78.5;
 
-    double vz = 0;
-    LorentzVector beam = new LorentzVector(0, 0, E_beam, E_beam);
-    LorentzVector electron = new LorentzVector();
-    boolean foundElectron = false;
+        double vz = 0;
+        LorentzVector beam = new LorentzVector(0, 0, E_beam, E_beam);
+        LorentzVector electron = new LorentzVector();
+        boolean foundElectron = false;
 
-    for (int i = 0; i < partBank.rows(); i++) {
-        if (partBank.getInt("pid", i) == 11) {
-            vz = partBank.getFloat("vz", i);
-            if (vz < -25 || vz > 10) continue;
-            double px = partBank.getFloat("px", i) / 1000.0;
-            double py = partBank.getFloat("py", i) / 1000.0;
-            double pz = partBank.getFloat("pz", i) / 1000.0;
-            double E = Math.sqrt(px * px + py * py + pz * pz);
-            vz = partBank.getFloat("vz", i);
-            electron.setPxPyPzE(px, py, pz, E);
-            foundElectron = true;
-            break;
+        for (int i = 0; i < partBank.rows(); i++) {
+            if (partBank.getInt("pid", i) == 11) {
+                vz = partBank.getFloat("vz", i);
+                if (vz < -25 || vz > 10) continue;
+                double px = partBank.getFloat("px", i) / 1000.0;
+                double py = partBank.getFloat("py", i) / 1000.0;
+                double pz = partBank.getFloat("pz", i) / 1000.0;
+                double E = Math.sqrt(px * px + py * py + pz * pz);
+                vz = partBank.getFloat("vz", i);
+                electron.setPxPyPzE(px, py, pz, E);
+                foundElectron = true;
+                break;
+            }
+        }
+
+        if (!foundElectron) return;
+
+        LorentzVector q = new LorentzVector();
+        q.copy(beam);
+        q.sub(electron);
+
+        double p = q.p();
+        double E = Math.sqrt(p * p + mp * mp);
+        double beta = p / E;
+        double v = beta * c;
+
+        double ux = q.px() / p;
+        double uy = q.py() / p;
+        double uz = q.pz() / p;
+
+        double pathLength_cm = barrelRadius_cm / Math.sqrt(ux * ux + uy * uy);
+        double dz = pathLength_cm * uz;
+        double z_at_bar = vz + dz;
+
+        double ptime = pathLength_cm / v;
+
+        double phi = Math.atan2(q.py(), q.px());
+        if (phi < 0) phi += 2 * Math.PI;
+        int phiBlock = XYtoPhiBlock(Math.cos(phi), Math.sin(phi));
+
+        for (ATOFBar bar : barList) {
+            if (Math.abs(phiBlock - bar.PhiBlock) == 0 || Math.abs(phiBlock - bar.PhiBlock) == 1) {
+                bar.setTrackZhit(z_at_bar);
+                bar.setTrackId(0);
+                bar.setPropTime(ptime);
+                bar.hasTrackHit = true;
+            }
         }
     }
-
-    if (!foundElectron) return;
-
-    LorentzVector q = new LorentzVector();
-    q.copy(beam);
-    q.sub(electron);
-
-    double p = q.p();
-    double E = Math.sqrt(p * p + mp * mp);
-    double beta = p / E;
-    double v = beta * c;
-
-    double ux = q.px() / p;
-    double uy = q.py() / p;
-    double uz = q.pz() / p;
-
-    double pathLength_cm = barrelRadius_cm / Math.sqrt(ux * ux + uy * uy);
-    double dz = pathLength_cm * uz;
-    double z_at_bar = vz + dz;
-
-    double ptime = pathLength_cm / v;
-
-    double phi = Math.atan2(q.py(), q.px());
-    if (phi < 0) phi += 2 * Math.PI;
-    int phiBlock = XYtoPhiBlock(Math.cos(phi), Math.sin(phi));
-
-    for (ATOFBar bar : barList) {
-        if (Math.abs(phiBlock - bar.PhiBlock) == 0 || Math.abs(phiBlock - bar.PhiBlock) == 1) {
-            bar.setTrackZhit(z_at_bar);
-            bar.setTrackId(0);
-            bar.setPropTime(ptime);
-            bar.hasTrackHit = true;
-        }
-    }
-}
 
     //end of elastic 
 
@@ -376,14 +376,15 @@ public void setTracks_Elastic(DataEvent event, ArrayList<ATOFBar> barList) {
     }
 
     public void FillData(DataEvent event, String name) {
-        //System.out.print("An event------------\n");
-        //first get list of bars and clusters:
+
         ArrayList<ATOFHit> hits = getATOFHits(event);
         ArrayList<ATOFBar> bars = getBars(hits);
-        
-        //System.out.print("Wedges " + hits.size() + "\n");
-        //System.out.print("Bars " + bars.size() + "\n");
-        setTracks(event,bars);
+
+        if(name.equals("T0elas")){
+            setTracks_Elastic(event, bars);
+        }else {
+            setTracks(event, bars);
+        }
         //setTracksMC(event,bars);
         double vtime = getFDvtime(event);
         ArrayList<ATOFBarWedgeClust> clusts = getClusts(hits, bars);
@@ -550,7 +551,7 @@ public void setTracks_Elastic(DataEvent event, ArrayList<ATOFBar> barList) {
             }
         }
 
-        else if( name.equals("T0")){
+        else if( name.equals("T0") || name.equals("T0elas")){
             for (ATOFBar bar : bars) {
                 System.out.println("in bars");
                 if(bar.ToT_up > ToTthresh && bar.ToT_down > ToTthresh) {
@@ -706,7 +707,7 @@ public void setTracks_Elastic(DataEvent event, ArrayList<ATOFBar> barList) {
                 }
             }
         }
-        else if(Module.equals("T0")){
+        else if(Module.equals("T0") || Module.equals("T0elas")){
             T0 = new H2F("T0",660,1,660,100,150,250);
             for (int i=0; i<15;i++){
                 for (int j = 0; j < 4; j++){
